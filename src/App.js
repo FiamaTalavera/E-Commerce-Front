@@ -2,6 +2,7 @@ import "./App.css";
 import { Route, Routes } from "react-router";
 import Navbar from "./components/Navbar";
 import Grid from "./components/Grid"
+import Login from "./components/Login";
 
 
 function App() {
@@ -9,9 +10,9 @@ function App() {
     <div>
       <Navbar />
       <Grid />
-      {/* <Routes>
-      Habilitar cuando se vayan a incorporar las rutas
-      </Routes> */}
+      <Routes>
+      <Route path="/user/login" element={<Login />}/>
+      </Routes> 
     </div>
   );
 }
