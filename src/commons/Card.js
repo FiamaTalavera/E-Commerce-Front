@@ -6,7 +6,7 @@ const Card = ({ product, onShowMore }) => {
             <div className="card">
                 <div className="card-image">
                     <figure className="image">
-                        <img src={product.img} alt="product img" />
+                        <img src={product.imageURL} alt="product img" />
                     </figure>
                 </div>
                 <div className="card-content">
