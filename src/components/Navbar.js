@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     axios
-      .post("/logout")
+      .post("http://localhost:3001/user/logout")
       .then((response) => {
         if (response.status === 204) {
           setIsAuthenticated(false);
@@ -134,10 +134,10 @@ const Navbar = () => {
           ) : (
             <div className="navbar-item">
               <div className="buttons">
-                <Link className="button is-primary" to="user/register">
+                <Link className="button is-primary" to="/user/register">
                   <strong>Registrarse</strong>
                 </Link>
-                <Link className="button is-light" to="user/login">
+                <Link className="button is-light" to="/user/login">
                   Ingresar
                 </Link>
               </div>
