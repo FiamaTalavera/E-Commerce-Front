@@ -43,7 +43,7 @@ const Login = ({ updateUser }) => {
 
     if (!emailError && !passwordError) {
       axios
-        .post("/user/login", {
+        .post("http://localhost:3001/user/login", {
           email,
           password,
         })
