@@ -46,7 +46,7 @@ const Login = ({ updateUser }) => {
         .post("http://localhost:3001/user/login", {
           email,
           password,
-        })
+        }, {withCredentials:true})
         .then((res) => {
           if (res.status === 200) {
             localStorage.setItem("user", JSON.stringify(res.data));

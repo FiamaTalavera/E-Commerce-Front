@@ -1,31 +1,16 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Diseño sin título.png";
-import axios from "axios";
 
-const Navbar = () => {
+
+const Navbar = ({user, handleLogout}) => {
   const [isActive, setIsActive] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const toggleNavbar = () => {
     setIsActive(!isActive);
   };
 
-  const handleLogout = () => {
-    axios
-      .post("http://localhost:3001/user/logout")
-      .then((response) => {
-        if (response.status === 204) {
-          setIsAuthenticated(false);
-        } else {
-          console.error("Error al cerrar sesión");
-        }
-      })
-      .catch((error) => {
-        console.error("Error al cerrar sesión:", error);
-      });
-  };
-
+  
   return (
     <nav
       className="navbar is-light"
@@ -120,7 +105,7 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-end">
-          {isAuthenticated ? (
+          {user ? (
             <div className="navbar-item">
               <div className="buttons">
                 <button className="button is-danger" onClick={handleLogout}>
