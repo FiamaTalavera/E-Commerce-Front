@@ -11,7 +11,7 @@ export const CardDetails = ({ product, onClose }) => {
                             <button className="delete" onClick={onClose} />
                         </header>
                         <section className="modal-card-body">
-                            <img src={product.img} alt="no hay fotito" />
+                            <img src={product.imageURL} alt="no hay fotito" />
                             <h5 className="title is-5">{product.description}</h5>
                             <p>STOCK: {product.stock}</p>
                             <h4 className="subtitle is-4">PRECIO: {product.price}</h4>
