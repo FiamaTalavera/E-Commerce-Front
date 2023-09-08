@@ -10,7 +10,7 @@ const Navbar = ({user, handleLogout}) => {
     setIsActive(!isActive);
   };
 
-  
+  console.log('USUARIO ---->', user);
   return (
     <nav
       className="navbar is-light"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Card from '../commons/Card';
 import { CardDetails } from '../commons/CardDetails';
-
 import axios from 'axios';
 
 const Grid = () => {
@@ -15,8 +14,8 @@ const Grid = () => {
                 setSelectedProduct(res.data);
             })
             .catch((error) => {
-            console.error('Error al traer detalles del producto:', error)
-        })
+                console.error('Error al traer detalles del producto:', error);
+            });
     };
 
     useEffect(() => {
@@ -28,6 +27,17 @@ const Grid = () => {
             })
             .catch((err) => console.log(err));
     }, []);
+
+    const handleAddToCart = (product) => {
+        axios
+            .post(`http://localhost:3001/products/addToCart/${product.id}`, { quantity: 1 }, { withCredentials: true })
+            .then((response) => {
+                console.log(`Se agrego ${product.name} al chango`);
+            })
+            .catch((error) => {
+                console.error('Error al agregar al chango:', error);
+            });
+    };
 
     return (
         <>
@@ -44,7 +54,7 @@ const Grid = () => {
                             />
                         </div>
                     ))}
-                    {selectedProduct && <CardDetails product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
+                    {selectedProduct && <CardDetails product={selectedProduct} onClose={() => setSelectedProduct(null)} addToCart={handleAddToCart} />}
                 </div>
             </div>
         </>

@@ -5,6 +5,7 @@ import Grid from "./components/Grid";
 import Login from "./components/Login";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Cart } from "./components/Cart";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -44,6 +45,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
+        <Route path="/order" element={<Cart/>} />
       </Routes>
     </div>
   );
