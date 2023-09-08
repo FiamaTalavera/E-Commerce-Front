@@ -16,7 +16,7 @@ const Card = ({ product, onShowMore }) => {
                 <div className="card-content">
                     <div className="media">
                         <div className="media-content">
-                            <p className="title is-6">{product.name}</p>
+                            <p className="title is-5">{product.name}</p>
                             <button onClick={onShowMore}>ver mas</button>
                         </div>
                     </div>
