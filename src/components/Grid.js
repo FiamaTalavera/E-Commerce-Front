@@ -17,7 +17,7 @@ const Grid = () => {
   useEffect(() => {
     axios.get("http://localhost:3001/products")
     .then((res) => {
-      console.log("res.data --> ", res.data);
+      console.log("res.data --> ", res.data); /* sacar console log? */
       setProducts(res.data)
     })
     .catch(err => console.log(err))
