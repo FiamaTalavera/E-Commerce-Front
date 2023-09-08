@@ -23,8 +23,8 @@ function App() {
   return (
     <div>
       <Navbar />
-      <Grid />
       <Routes>
+      <Route path="/" element={<Grid />} />
       <Route path="/user/login" element={<Login updateUser={updateUser} />}/>
       </Routes> 
     </div>
