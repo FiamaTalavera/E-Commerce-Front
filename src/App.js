@@ -4,9 +4,11 @@ import Navbar from "./components/Navbar";
 import Grid from "./components/Grid";
 import Login from "./components/Login";
 import { useEffect, useState } from "react";
+import Register from "./components/Register";
 import axios from "axios";
 import { Cart } from "./components/Cart";
 import { Checkout } from "./components/Checkout";
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -21,6 +23,7 @@ function App() {
   const updateUser = (userAuth) => {
     setUser(userAuth);
   };
+
 
   const handleLogout = () => {
     axios
@@ -43,7 +46,8 @@ function App() {
   return (
     <div>
       <Navbar user={user} handleLogout={handleLogout} />
-      <Routes>
+      <Routes>        
+        <Route path="/user/register" element={<Register />} />
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart/>} />
