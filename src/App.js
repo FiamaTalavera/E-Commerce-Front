@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Cart } from "./components/Cart";
+import ResponsiveAppBar from "./components/prueba";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -41,7 +42,7 @@ function App() {
 
   return (
     <div>
-      <Navbar user={user} handleLogout={handleLogout} />
+      <ResponsiveAppBar user={user} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
