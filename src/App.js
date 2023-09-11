@@ -5,6 +5,8 @@ import Grid from "./components/Grid";
 import Login from "./components/Login";
 import { useEffect, useState } from "react";
 import Register from "./components/Register";
+import axios from "axios";
+import { Cart } from "./components/Cart";
 
 
 function App() {
@@ -20,13 +22,34 @@ function App() {
   const updateUser = (userAuth) => {
     setUser(userAuth);
   };
+
+
+  const handleLogout = () => {
+    axios
+      .post("http://localhost:3001/user/logout", null, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        if (response.status === 204) {
+          localStorage.removeItem("user");
+          setUser(null);
+        } else {
+          console.error("Error al cerrar sesión");
+        }
+      })
+      .catch((error) => {
+        console.error("Error al cerrar sesión:", error);
+      });
+  };
+
   return (
     <div>
-      <Navbar />
-      <Grid />
-      <Routes>
-        <Route path="/user/login" element={<Login updateUser={updateUser} />} />
+      <Navbar user={user} handleLogout={handleLogout} />
+      <Routes>        
         <Route path="/user/register" element={<Register />} />
+        <Route path="/" element={<Grid />} />
+        <Route path="/user/login" element={<Login updateUser={updateUser} />} />
+        <Route path="/order" element={<Cart/>} />
       </Routes>
     </div>
   );
