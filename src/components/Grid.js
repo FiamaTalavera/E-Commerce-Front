@@ -28,9 +28,9 @@ const Grid = () => {
             .catch((err) => console.log(err));
     }, []);
 
-    const handleAddToCart = (product) => {
+    const handleAddToCart = (product, quantity) => {
         axios
-            .post(`http://localhost:3001/products/addToCart/${product.id}`, { quantity: 1 }, { withCredentials: true })
+            .post(`http://localhost:3001/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
             .then((response) => {
                 console.log(`Se agrego ${product.name} al chango`);
             })

@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Cart } from "./components/Cart";
+import { Checkout } from "./components/Checkout";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -46,6 +47,7 @@ function App() {
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart/>} />
+        <Route path="/checkout" element={<Checkout/>} />
       </Routes>
     </div>
   );
