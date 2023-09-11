@@ -10,6 +10,7 @@ const Register = () => {
     password: "",
     last_name: "",
     address: "",
+    snippet: "",
   });
 
   const [isRegistered, setIsRegistered] = useState(false);
@@ -99,6 +100,18 @@ const Register = () => {
           id="address"
           name="address"
           value={data.address}
+          onChange={handleChange}
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label for="snippet">Admin: </label>
+        <input
+          type="text"
+          id="snippet"
+          name="snippet"
+          value={data.snippet}
           onChange={handleChange}
           required
         />
