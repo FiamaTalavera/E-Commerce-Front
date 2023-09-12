@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 import Register from "./components/Register";
 import axios from "axios";
 import { Cart } from "./components/Cart";
-import { Sidebar } from "./components/Categories";
+import { Categories } from "./components/Categories";
 import { Checkout } from "./components/Checkout";
+
 
 
 function App() {
@@ -47,12 +48,13 @@ function App() {
   return (
     <div>
       <Navbar user={user} handleLogout={handleLogout} />
+
       <Routes>        
         <Route path="/user/register" element={<Register />} />
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart/>} />
-        <Route path="/admin" element={<Sidebar />} />
+        <Route path="/admin" element={<Categories />} />
         <Route path="/checkout" element={<Checkout/>} />
       </Routes>
     </div>
