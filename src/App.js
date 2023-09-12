@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import Register from "./components/Register";
 import axios from "axios";
 import { Cart } from "./components/Cart";
+import { Sidebar } from "./components/Categories";
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart/>} />
+        <Route path="/admin" element={<Sidebar />} />
       </Routes>
     </div>
   );
