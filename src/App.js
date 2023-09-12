@@ -55,9 +55,10 @@ function App() {
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart/>} />
+        <Route path="/admin" element={<Sidebar/>} />
         <Route path="/admin" element={<Categories />} />
         <Route path="/checkout" element={<Checkout/>} />
-        <Route path="/admin" element={<Sidebar/>} />
+        
       </Routes>
     </div>
   );

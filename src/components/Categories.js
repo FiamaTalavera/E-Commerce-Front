@@ -7,26 +7,71 @@ import axios from "axios";
 import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
-
-
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export const Categories = () => {
   const [name, setName] = useState("");
   const [categories, setCategories] = useState([]);
+  const [edit, setEdit] = useState(false);
+  const [editingCategoryName, setEditingCategoryName] = useState("");
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
+
+  const handleKeyDown = (event, id) => {
+    if (event.key === "Enter") {
+      handleSave(id);
+    }
+  };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "name", headerName: "Nombre de Categoría", width: 200 },
+    { field: "id", headerName: "ID", width: 150 },
+    {
+      field: "name",
+      headerName: "Categoría",
+      width: 200,
+      renderCell: (params) => (
+        <>
+          <input
+            value={
+              edit && editingCategoryId === params.row.id
+                ? editingCategoryName
+                : params.row.name
+            }
+            disabled={!edit || editingCategoryId !== params.row.id}
+            style={{
+              width: 100,
+              border: "none",
+              background: "white",
+              color: "black",
+              padding: "8px",
+            }}
+            onChange={(e) => setEditingCategoryName(e.target.value)}
+            onKeyDown={(e) => handleKeyDown(e, params.row.id)}
+          />
+        </>
+      ),
+    },
     {
       field: "edit",
       headerName: "Editar",
-      width: 100,
+      width: 200,
       renderCell: (params) => (
         <div style={{ cursor: "pointer" }}>
           <EditIcon
             color="primary"
-            onClick={() => handleEdit(params.row.id)}
-            style={{ display: params.row.selected ? "block" : "none" }}
+            onClick={() => handleEdit(params.row.id, params.row.name)}
+          />
+        </div>
+      ),
+    },
+    {
+      field: "delete",
+      headerName: "Eliminar",
+      width: 150,
+      renderCell: (params) => (
+        <div style={{ cursor: "pointer" }}>
+          <DeleteIcon
+            color="primary"
+            onClick={() => handleDelete(params.row.id)}
           />
         </div>
       ),
@@ -37,9 +82,27 @@ export const Categories = () => {
     allCategories();
   }, []);
 
-  const handleEdit = (id) => {
-    
-    console.log(`Editar la fila con ID ${id}`);
+  const handleEdit = (id, categoryName) => {
+    setEditingCategoryId(id);
+    setEditingCategoryName(categoryName);
+    setEdit(true);
+  };
+
+  const handleSave = () => {
+    axios
+      .put(`http://localhost:3001/admin/categories/${editingCategoryId}`, {
+        name: editingCategoryName,
+      })
+      .then((res) => {
+        console.log("Categoría modificada:", res.data);
+        setEdit(false);
+        setEditingCategoryId(null);
+        setEditingCategoryName("");
+        allCategories();
+      })
+      .catch((error) => {
+        console.error("Error al modificar categoría:", error);
+      });
   };
 
   const handleSubmit = (e) => {
@@ -68,28 +131,37 @@ export const Categories = () => {
       });
   };
 
-
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:3001/admin/categories/${id}`)
+      .then((res) => {
+        console.log("Categoría eliminada:", res.data);
+        allCategories();
+      })
+      .catch((error) => {
+        console.error("Error al eliminar categoría:", error);
+      });
+  };
 
   return (
     <>
       <div
         style={{
           position: "fixed",
-          top: 100,
-          right: 15,
+          top: "20%",
+          right: "20%",
           height: 400,
-          width: "70%",
+          width: "50%",
         }}
       >
         <DataGrid
           rows={categories}
           columns={columns}
           pageSizeOptions={[5, 10]}
-          checkboxSelection
         />
       </div>
 
-      <div style={{ marginTop: "500px", textAlign: "center" }}>
+      <div style={{ marginTop: "30%", textAlign: "center" }}>
         <Box
           component="form"
           sx={{
