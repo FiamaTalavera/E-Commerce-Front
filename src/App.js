@@ -8,6 +8,7 @@ import Register from "./components/Register";
 import axios from "axios";
 import { Cart } from "./components/Cart";
 import { Checkout } from "./components/Checkout";
+import Sidebar from "./components/Sidebar"
 
 
 function App() {
@@ -52,6 +53,7 @@ function App() {
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart/>} />
         <Route path="/checkout" element={<Checkout/>} />
+        <Route path="/admin" element={<Sidebar/>} />
       </Routes>
     </div>
   );
