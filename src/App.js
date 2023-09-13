@@ -24,9 +24,11 @@ function App() {
   }, []);
 
   const updateUser = (userAuth) => {
+    console.log(userAuth);
     setUser(userAuth);
   };
 
+  console.log(user);
 
   const handleLogout = () => {
     axios
@@ -50,6 +52,13 @@ function App() {
     <div>
       <Navbar user={user} handleLogout={handleLogout} />
 
+      <Routes>
+        <Route path="/user/register" element={<Register />} />
+        <Route path="/" element={<Grid />} />
+        <Route path="/user/login" element={<Login updateUser={updateUser} />} />
+        <Route path="/order" element={<Cart />} />
+
+
       <Routes>        
         <Route path="/user/register" element={<Register />} />
         <Route path="/" element={<Grid />} />
@@ -59,6 +68,7 @@ function App() {
         <Route path="/admin" element={<Categories />} />
         <Route path="/checkout" element={<Checkout/>} />
         
+
       </Routes>
     </div>
   );
