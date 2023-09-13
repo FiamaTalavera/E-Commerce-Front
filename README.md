@@ -80,7 +80,3 @@ Este proyecto es un esfuerzo colaborativo de [Agustín Torroja](https://github.c
 ## 7. Contacto
 
 Si deseas obtener más información sobre el proyecto o tenes alguna consulta adicional, no dudes en ponerte en contacto con nosotros a través del correo electrónico: [en.el.horno.cafe@gmail.com](mailto:en.el.horno.cafe@gmail.com). ¡Esperamos que disfrutes utilizando "En el Horno" y que te sea útil!
-
-## 8. Contribución
-
-Este proyecto es un esfuerzo colaborativo de Agustín Torroja, Isidro Molina, Fiama Talavera Viccini y Santiago Zanetti. Si deseas contribuir a ste proyecto, podes realizar propuestas de mejora, informar sobre problemas o enviar solicitudes de extracción (pull requests) en los repositorios correspondientes.
