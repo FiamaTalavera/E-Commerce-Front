@@ -7,15 +7,11 @@ import { useEffect, useState } from "react";
 import Register from "./components/Register";
 import axios from "axios";
 import { Cart } from "./components/Cart";
-<<<<<<< HEAD
-import ResponsiveAppBar from "./components/prueba";
-=======
 import { Categories } from "./components/Categories";
 import { Checkout } from "./components/Checkout";
 import Sidebar from "./components/Sidebar"
 
 
->>>>>>> develop
 
 function App() {
   const [user, setUser] = useState(null);
