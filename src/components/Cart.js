@@ -109,7 +109,7 @@ export const Cart = () => {
             <ul>
                 {cartItems.map((item) => (
                     <li key={item.id}>
-                        <img style={{ height: '100px' }} src={`${item.product.imageURL}`} alt='no hay fotito'/>
+                        <img style={{ height: '100px' }} src={`${item.product.imageURL}`} alt="no hay fotito" />
                         {item.product.name} - Cantidad: {item.quantity} - Precio Total: {item.product.price * item.quantity}
                         <button onClick={() => handleDecrement(item)}>-</button>
                         <button onClick={() => handleIncrement(item)}>+</button>
@@ -117,9 +117,9 @@ export const Cart = () => {
                     </li>
                 ))}
             </ul>
-            <h4>TOTAL A PAGAR: {totalPrice} </h4>
-            <Link to='/checkout'>
-            <button>Ir a pagar</button>
+            <h4>TOTAL A PAGAR: {cartItems.length > 0 ? totalPrice : 0} </h4>
+            <Link to="/checkout">
+                <button>Ir a pagar</button>
             </Link>
         </div>
     );
