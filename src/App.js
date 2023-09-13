@@ -10,7 +10,7 @@ import { Cart } from "./components/Cart";
 import { Categories } from "./components/Categories";
 import { Checkout } from "./components/Checkout";
 import Sidebar from "./components/Sidebar"
-
+import PruebaNav from "./components/prueba"
 
 
 function App() {
@@ -48,7 +48,7 @@ function App() {
 
   return (
     <div>
-      <Navbar user={user} handleLogout={handleLogout} />
+      <PruebaNav user={user} handleLogout={handleLogout} />
 
       <Routes>        
         <Route path="/user/register" element={<Register />} />

@@ -12,7 +12,8 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-
+import { green } from '@mui/material/colors';
+const primary = green[500]
 import { Link } from "react-router-dom";
 import logo from "../assets/Diseño sin título.png";
 
@@ -40,7 +41,7 @@ function ResponsiveAppBar({ user, handleLogout }) {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
         <img src={logo} alt="Nombre de tu sitio web" width="50" height="330" style={{ marginRight: '30px' }}/>
@@ -155,9 +156,14 @@ function ResponsiveAppBar({ user, handleLogout }) {
               onClose={handleCloseUserMenu}
             >
               {user ? (
+                <>
                 <MenuItem onClick={handleLogout}>
-                  <Typography textAlign="center">Salir</Typography>
+                <Typography textAlign="center">Salir</Typography>
+              </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  <Typography textAlign="center">Perfil</Typography>
                 </MenuItem>
+                </>
               ) : (
                 <>
                   <MenuItem onClick={handleCloseUserMenu}>
