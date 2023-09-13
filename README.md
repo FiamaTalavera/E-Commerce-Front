@@ -1,70 +1,69 @@
-# Getting Started with Create React App
+# README - Proyecto: En el Horno
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este README proporciona información esencial sobre el proyecto E-Commerce "En el Horno", desarrollado como parte de un trabajo práctico para Plataforma 5.
 
-## Available Scripts
+## Contenido
 
-In the project directory, you can run:
+1. [Introducción](#introducción)
+2. [Funcionalidades](#funcionalidades)
+3. [Comenzar](#comenzar)
+4. [Ayuda](#ayuda)
+5. [Contribución](#contribución)
+6. [Contacto](#contacto)
 
-### `npm start`
+## 1. Introducción
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+El proyecto "En el Horno" es una plataforma de comercio electrónico diseñada específicamente para el rubro gastronómico, con un enfoque en alimentos y bebidas al estilo cafetería. Este sistema se compone de dos repositorios: uno para el [front-end](https://github.com/FiamaTalavera/E-Commerce-Front) y otro para el [back-end](https://github.com/FiamaTalavera/E-Commerce-Back). El front-end proporciona la interfaz de usuario, mientras que el back-end maneja las operaciones relacionadas con la gestión de productos, usuarios y pedidos.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 2. Funcionalidades
 
-### `npm test`
+Este trabajo ofrece una serie de funcionalidades tanto para los usuarios como para los administradores del negocio:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Funcionalidades para Usuarios:**
+- Explorar y buscar productos en el catálogo.
+- Agregar productos al carrito de compras.
+- Realizar pedidos y completar el proceso de compra.
+- Ver el historial de pedidos.
+- Crear una cuenta y gestionar su perfil.
 
-### `npm run build`
+**Funcionalidades para Administradores:**
+- Gestionar el catálogo de productos y categorías (agregar, editar y eliminar).
+- Ver y administrar pedidos.
+- Gestionar usuarios y permisos.
+- Supervisar y actualizar el estado de pedidos e inventario.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 3. Comenzar
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Para comenzar a utilizar el proyecto debe seguir estos pasos:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Clonar los Repositorios:**
 
-### `npm run eject`
+1. Clone el repositorio del front-end ejecutando el siguiente comando en la terminal:
+git clone https://github.com/FiamaTalavera/E-Commerce-Front.git
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Clone el repositorio del back-end ejecutando el siguiente comando en la terminal:
+git clone https://github.com/FiamaTalavera/E-Commerce-Back.git
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Instalar Dependencias:**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+3. En ambos directorios, ejecute el siguiente comando para instalar las dependencias:
+```npm install```
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Iniciar la Aplicación:**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+4. Inicia los directorios ejecutando el siguiente comando:
+```npm start```
 
-### Code Splitting
+5. Iniciar la base de datos ejecutando el siguiente comando:
+```npm run seed```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
+## 4. Ayuda
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Si necesitas ayuda con el proyecto "En el Horno," podes ponerte en contacto con nosotros a través del correo electrónico: [en.el.horno.cafe@gmail.com](mailto:en.el.horno.cafe@gmail.com). Estaremos encantados de responder a tus preguntas y proporcionarte la asistencia necesaria.
 
-### Making a Progressive Web App
+## 5. Contribución
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Este proyecto es un esfuerzo colaborativo de Agustín Torroja, Isidro Molina, Fiama Talavera Viccini y Santiago Zanetti. Si deseas contribuir a ste proyecto, podes realizar propuestas de mejora, informar sobre problemas o enviar solicitudes de extracción (pull requests) en los repositorios correspondientes.
