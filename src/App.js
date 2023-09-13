@@ -52,15 +52,10 @@ function App() {
 
   return (
     <div>
-<<<<<<< HEAD
-      <ResponsiveAppBar user={user} handleLogout={handleLogout} />
-      <Routes>
-=======
       <Navbar user={user} handleLogout={handleLogout} />
 
       <Routes>        
         <Route path="/user/register" element={<Register />} />
->>>>>>> develop
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart/>} />
