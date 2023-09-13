@@ -113,7 +113,6 @@ const Register = () => {
           name="snippet"
           value={data.snippet}
           onChange={handleChange}
-          required
         />
       </div>
 

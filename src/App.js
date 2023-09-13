@@ -20,9 +20,11 @@ function App() {
   }, []);
 
   const updateUser = (userAuth) => {
+    console.log(userAuth);
     setUser(userAuth);
   };
 
+  console.log(user);
 
   const handleLogout = () => {
     axios
@@ -45,11 +47,11 @@ function App() {
   return (
     <div>
       <Navbar user={user} handleLogout={handleLogout} />
-      <Routes>        
+      <Routes>
         <Route path="/user/register" element={<Register />} />
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
-        <Route path="/order" element={<Cart/>} />
+        <Route path="/order" element={<Cart />} />
       </Routes>
     </div>
   );
