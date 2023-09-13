@@ -33,6 +33,7 @@ function App() {
             });
     }, []);
 
+
     useEffect(() => {
         const storedAuth = localStorage.getItem('user');
         if (storedAuth) {
@@ -43,6 +44,7 @@ function App() {
     const updateUser = (userAuth) => {
         setUser(userAuth);
     };
+
 
     const handleLogout = () => {
         axios
@@ -65,18 +67,17 @@ function App() {
     return (
         <div>
             <Navbar user={user} handleLogout={handleLogout} />
-
-            <Routes>
-                <Route path="/user/register" element={<Register />} />
-                <Route path="/" element={<Grid />} />
-                <Route path="/user/login" element={<Login updateUser={updateUser} />} />
-                <Route path="/order" element={<Cart />} />
-                <Route path="/admin" element={<Sidebar />} />
-                <Route path="/admin" element={<Categories />} />
-                {<Route path="/checkout" element={<Checkout cartItems={cartItems} />} />}
-            </Routes>
-        </div>
-    );
+      <Routes>        
+        <Route path="/user/register" element={<Register />} />
+        <Route path="/" element={<Grid />} />
+        <Route path="/user/login" element={<Login updateUser={updateUser} />} />
+        <Route path="/order" element={<Cart/>} />
+        <Route path="/admin" element={<Sidebar/>} />
+        <Route path="/admin" element={<Categories />} />
+        <Route path="/checkout" element={<Checkout cartItems={cartItems} />
+      </Routes>
+    </div>
+  );
 }
 
 export default App;
