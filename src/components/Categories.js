@@ -90,7 +90,7 @@ export const Categories = () => {
 
   const handleSave = () => {
     axios
-      .put(`http://localhost:3001/admin/categories/${editingCategoryId}`, {
+      .put(`${process.env.REACT_APP_URLBACK}/admin/categories/${editingCategoryId}`, {
         name: editingCategoryName,
       })
       .then((res) => {
@@ -109,7 +109,7 @@ export const Categories = () => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/admin/categories", { name })
+      .post(`${process.env.REACT_APP_URLBACK}/admin/categories`, { name })
       .then((res) => {
         console.log("Categoría creada:", res.data);
         setName("");
@@ -122,7 +122,7 @@ export const Categories = () => {
 
   const allCategories = () => {
     axios
-      .get("http://localhost:3001/admin/categories")
+      .get(`${process.env.REACT_APP_URLBACK}/admin/categories`)
       .then((res) => {
         setCategories(res.data);
       })
@@ -133,7 +133,7 @@ export const Categories = () => {
 
   const handleDelete = (id) => {
     axios
-      .delete(`http://localhost:3001/admin/categories/${id}`)
+      .delete(`${process.env.REACT_APP_URLBACK}/admin/categories/${id}`)
       .then((res) => {
         console.log("Categoría eliminada:", res.data);
         allCategories();

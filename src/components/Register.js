@@ -27,7 +27,7 @@ const Register = () => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/user/register", data)
+      .post(`${process.env.REACT_APP_URLBACK}/user/register`, data)
       .then((response) => {
         const responseData = response.data;
         console.log("Registro exitoso!", responseData);
