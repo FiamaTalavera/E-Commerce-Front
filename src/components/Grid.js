@@ -22,7 +22,7 @@ const Grid = () => {
         axios
             .get(`${process.env.REACT_APP_URLBACK}/products`)
             .then((res) => {
-                console.log('res.data --> ', res.data); /* sacar console log? */
+                console.log('res.data --> ', res.data); 
                 setProducts(res.data);
             })
             .catch((err) => console.log(err));
