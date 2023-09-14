@@ -10,7 +10,7 @@ export const Cart = () => {
     const totalPrice = useSelector((state) => state.cart.total);
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/order`, { withCredentials: true }).then((res) => {
+        axios.get(`${process.env.REACT_APP_URLBACK}/order`, { withCredentials: true }).then((res) => {
             // este log muestra un array de objetos con todas las ordenes hechas
             console.log('ORDENES --->', res.data);
             dispatch(fetchCartItems(res.data));
@@ -18,9 +18,9 @@ export const Cart = () => {
     }, [dispatch]);
 
     const handleIncrement = (item) => {
-        const updatedQuantity = item.quantity + 1;
+       const updatedQuantity = item.quantity + 1;
         axios
-            .put(`http://localhost:3001/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
+            .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
             .then((res) => {
                 console.log('Cantidad actualizada en el back ( + )');
                 dispatch(incrementQuantity(item.id, updatedQuantity));
@@ -34,7 +34,7 @@ export const Cart = () => {
         if (item.quantity > 1) {
             const updatedQuantity = item.quantity - 1;
             axios
-                .put(`http://localhost:3001/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
+                .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
                 .then((res) => {
                     console.log('Cantidad actualizada en el back ( - )');
                     dispatch(decrementQuantity(item.id, updatedQuantity));
@@ -52,7 +52,7 @@ export const Cart = () => {
         const productId = item.product.id;
 
         axios
-            .delete(`http://localhost:3001/order/remove/${orderId}/${productId}`)
+            .delete(`${process.env.REACT_APP_URLBACK}/order/remove/${orderId}/${productId}`)
             .then((res) => {
                 console.log(`Producto removido --> `, item);
                 dispatch(removeFromCart({ orderId, productId }));

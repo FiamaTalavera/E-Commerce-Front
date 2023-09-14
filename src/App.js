@@ -1,6 +1,7 @@
 import './App.css';
 import { Route, Routes } from 'react-router';
 import Navbar from './components/Navbar';
+import Grid from './components/Grid';
 import Login from './components/Login';
 import { useEffect, useState } from 'react';
 import Register from './components/Register';
@@ -11,6 +12,7 @@ import Sidebar from './components/Sidebar';
 import Checkout from './components/Checkout/Checkout';
 import { Home } from './components/Home';
 import { Searchbar } from './components/Searchbar';
+import History from './components/History';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -26,7 +28,7 @@ function App() {
 
         useEffect(() => {
             axios
-                .get('http://localhost:3001/products')
+                .get(`${process.env.REACT_APP_URLBACK}/products`)
                 .then((res) => {
                     console.log('Los productos --> ', res.data); /* sacar console log? */
                     setProducts(res.data);
@@ -40,7 +42,7 @@ function App() {
 
     const handleLogout = () => {
         axios
-            .post('http://localhost:3001/user/logout', null, {
+            .post(`${process.env.REACT_APP_URLBACK}/user/logout`, null, {
                 withCredentials: true,
             })
             .then((response) => {
@@ -62,7 +64,7 @@ function App() {
 
     return (
         <div>
-            <Navbar clearSearch={()=>onSearch([])} user={user} handleLogout={handleLogout} />
+            <Navbar user={user} handleLogout={handleLogout} clearSearch={()=>onSearch([])}/>
             <Routes>
                 <Route path="/" element={<Home onSearch={onSearch} searchedProducts={searchedProducts} products={products} />} />
                 <Route path="/user/register" element={<Register />} />
@@ -72,6 +74,7 @@ function App() {
                 <Route path="/admin" element={<Categories />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/search" element={<Searchbar onSearch={onSearch} searchedProducts={searchedProducts} />} />
+                <Route path="/user/history" element={<History />} />
             </Routes>
         </div>
     );

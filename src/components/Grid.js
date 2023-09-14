@@ -11,7 +11,7 @@ const Grid = ({products}) => {
 
     const handleShowMore = (product) => {
         axios
-            .get(`http://localhost:3001/products/${product.id}`)
+            .get(`${process.env.REACT_APP_URLBACK}/products/${product.id}`)
             .then((res) => {
                 setSelectedProduct(res.data);
             })
@@ -20,9 +20,10 @@ const Grid = ({products}) => {
             });
     };
 
+
     const handleAddToCart = (product, quantity) => {
         axios
-            .post(`http://localhost:3001/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
+            .post(`${process.env.REACT_APP_URLBACK}/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
             .then((response) => {
                 console.log(`Se agrego ${product.name} al chango`);
                 dispatch(addToCart({ product, quantity }));
