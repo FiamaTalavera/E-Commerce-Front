@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import logo from "../assets/Diseño sin título.png";
 
 
-const Navbar = ({user, handleLogout}) => {
+const Navbar = ({user, handleLogout, clearSearch}) => {
   const [isActive, setIsActive] = useState(false);
 
   const toggleNavbar = () => {
@@ -18,7 +18,7 @@ const Navbar = ({user, handleLogout}) => {
       aria-label="main navigation"
     >
       <div className="navbar-brand">
-        <Link className="navbar-item" to="/">
+        <Link className="navbar-item" to="/" onClick={clearSearch}>
           <img src={logo} width="30" height="200" alt="logo" />
         </Link>
 
