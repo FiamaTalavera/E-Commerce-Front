@@ -73,7 +73,7 @@ function App() {
                 <Route path="/order" element={<Cart />} />
                 <Route path="/admin" element={<Sidebar />} />
                 <Route path="/admin" element={<Categories />} />
-                <Route path="/checkout" element={<Checkout cartItems={cartItems} />} />
+                <Route path="/checkout" element={<Checkout />} />
             </Routes>
         </div>
     );
