@@ -15,6 +15,8 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router';
 
 function Copyright() {
     return (
@@ -46,6 +48,7 @@ function getStepContent(step, cartItems) {
 
 export default function Checkout({ cartItems }) {
     const [activeStep, setActiveStep] = React.useState(0);
+    const navigate = useNavigate()
 
     const handleNext = () => {
         setActiveStep(activeStep + 1);
@@ -60,9 +63,10 @@ export default function Checkout({ cartItems }) {
         axios
             .post(`${process.env.REACT_APP_URLBACK}/order/checkout`, {}, { withCredentials: true })
             .then((res) => {
-                console.log('Orden pagada!');
+                toast.success('Orden pagada!')
             })
             .catch((error) => {
+                toast.error('Error al pagar')
                 console.error('Fallo en el pago --->', error);
             });
     };
@@ -98,10 +102,10 @@ export default function Checkout({ cartItems }) {
                     </Stepper>
                     {activeStep === steps.length ? (
                         <React.Fragment>
-                            <Typography variant="h5" gutterBottom>
+                            <Typography style={{textAlign:'center'}} variant="h5" gutterBottom>
                                 ¡Gracias por tu compra!
                             </Typography>
-                            <Typography variant="subtitle1">Your order number is #2001539. We have emailed your order confirmation, and will send you an update when your order has shipped.</Typography>
+                            <button onClick={()=>navigate('/')}>Volver al home</button>
                         </React.Fragment>
                     ) : (
                         <React.Fragment>
@@ -109,7 +113,7 @@ export default function Checkout({ cartItems }) {
                             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                                 {activeStep !== 0 && (
                                     <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                                        Back
+                                        Volver atrás
                                     </Button>
                                 )}
 
@@ -123,7 +127,7 @@ export default function Checkout({ cartItems }) {
                                         }
                                     }}
                                     sx={{ mt: 3, ml: 1 }}>
-                                    {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                                    {activeStep === steps.length - 1 ? 'Pagar' : 'Siguiente'}
                                 </Button>
                             </Box>
                         </React.Fragment>

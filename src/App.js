@@ -13,6 +13,8 @@ import Checkout from './components/Checkout/Checkout';
 import { Home } from './components/Home';
 import { Searchbar } from './components/Searchbar';
 import History from './components/History';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -49,7 +51,11 @@ function App() {
                 if (response.status === 204) {
                     localStorage.removeItem('user');
                     setUser(null);
+                    toast.info('Hasta la proxima!', {
+                        icon: false,
+                    });
                 } else {
+                    toast.error('Error al cerrar sesión')
                     console.error('Error al cerrar sesión');
                 }
             })
@@ -64,7 +70,8 @@ function App() {
 
     return (
         <div>
-            <Navbar user={user} handleLogout={handleLogout} clearSearch={()=>onSearch([])}/>
+            <ToastContainer position="top-right" autoClose={1600} pauseOnFocusLoss={false} pauseOnHover={false} />
+            <Navbar user={user} handleLogout={handleLogout} clearSearch={() => onSearch([])} />
             <Routes>
                 <Route path="/" element={<Home onSearch={onSearch} searchedProducts={searchedProducts} products={products} />} />
                 <Route path="/user/register" element={<Register />} />

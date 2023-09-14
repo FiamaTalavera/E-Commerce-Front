@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchCartItems, incrementQuantity, decrementQuantity, removeFromCart } from '../state/cart';
+import { toast } from 'react-toastify';
 
 export const Cart = () => {
     const dispatch = useDispatch();
@@ -11,21 +12,20 @@ export const Cart = () => {
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_URLBACK}/order`, { withCredentials: true }).then((res) => {
-            // este log muestra un array de objetos con todas las ordenes hechas
-            console.log('ORDENES --->', res.data);
             dispatch(fetchCartItems(res.data));
         });
     }, [dispatch]);
 
     const handleIncrement = (item) => {
-       const updatedQuantity = item.quantity + 1;
+        const updatedQuantity = item.quantity + 1;
         axios
             .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
             .then((res) => {
-                console.log('Cantidad actualizada en el back ( + )');
+                toast.success('Cantidad aumentada');
                 dispatch(incrementQuantity(item.id, updatedQuantity));
             })
             .catch((error) => {
+                toast.error('Error al aumentar');
                 console.error('Error actualizando cantidad en el back', error);
             });
     };
@@ -36,14 +36,15 @@ export const Cart = () => {
             axios
                 .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
                 .then((res) => {
-                    console.log('Cantidad actualizada en el back ( - )');
+                    toast.success('Cantidad disminuida');
                     dispatch(decrementQuantity(item.id, updatedQuantity));
                 })
                 .catch((error) => {
+                    toast.error('Error al disminuir');
                     console.error('Error actualizando cantidad en el back', error);
                 });
         } else {
-            console.log('1 es el minimo');
+            toast.warn('1 es el minimo!');
         }
     };
 
@@ -54,10 +55,11 @@ export const Cart = () => {
         axios
             .delete(`${process.env.REACT_APP_URLBACK}/order/remove/${orderId}/${productId}`)
             .then((res) => {
-                console.log(`Producto removido --> `, item);
+                toast.warn('Producto removido :(')
                 dispatch(removeFromCart({ orderId, productId }));
             })
             .catch((error) => {
+                toast.error('Error al remover');
                 console.error('Error al remover producto', error);
             });
     };

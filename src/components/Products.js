@@ -10,6 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
+import { toast } from 'react-toastify';
 
 export const Products = () => {
   const [name, setName] = useState("");
@@ -93,6 +94,7 @@ export const Products = () => {
 
   const handleSave = () => {
     if (!name || !description || price <= 0 || !imageURL || stock < 0) {
+      toast.warn('Completa todos los campos.')
       return;
     }
 
@@ -108,13 +110,15 @@ export const Products = () => {
           categoryId
         })
         .then((res) => {
-          console.log("Producto modificado:", res.data);
+          // console.log("Producto modificado:", res.data);
+          toast.success('Producto modificado correctamente')
           setEdit(false);
           setEditingProductId(null);
           clearForm();
           getAllProducts();
         })
         .catch((error) => {
+          toast.error('Error al modificar producto');
           console.error("Error al modificar producto:", error);
         });
     } else {
@@ -129,11 +133,13 @@ export const Products = () => {
           categoryId
         })
         .then((res) => {
-          console.log("Producto creado:", res.data);
+          // console.log("Producto creado:", res.data);
+          toast.success('Producto creado correctamente');
           clearForm();
           getAllProducts();
         })
         .catch((error) => {
+          toast.error('Error al crear producto');
           console.error("Error al crear producto:", error);
         });
     }
@@ -144,10 +150,12 @@ export const Products = () => {
     axios
       .delete(`http://localhost:3001/admin/products/${id}`)
       .then(() => {
-        console.log("Producto eliminado");
+        // console.log("Producto eliminado");
+        toast.info('Producto eliminado correctamente')
         getAllProducts();
       })
       .catch((error) => {
+        toast.error('Error al eliminar producto');
         console.error("Error al eliminar producto:", error);
       });
   };
