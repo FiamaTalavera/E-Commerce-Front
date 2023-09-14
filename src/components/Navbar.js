@@ -26,7 +26,7 @@ function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-  
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -189,52 +189,51 @@ function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {user ? (
-                <>
-                  <MenuItem>
-                    <Link to="/user/profile">
-                      <Typography textAlign="center" sx={{ color: "black" }}>
-                        Perfil
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                  {user && !user.is_admin ? (
-                    <MenuItem>
-                      <Link to="/user/history">
+              {user
+                ? [
+                    <MenuItem key="profile">
+                      <Link to="/user/profile">
                         <Typography textAlign="center" sx={{ color: "black" }}>
-                          Historial
+                          Perfil
                         </Typography>
                       </Link>
-                    </MenuItem>
-                  ) : (
-                    ""
-                  )}
-                  <MenuItem onClick={handleLogout}>
-                    <Link to="/">
-                      <Typography textAlign="center" sx={{ color: "black" }}>
-                        Salir
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                </>
-              ) : (
-                <>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Link to="/user/register">
-                      <Typography textAlign="center" sx={{ color: "black" }}>
-                        Registrarse
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                  <MenuItem onClick={handleCloseUserMenu}>
-                    <Link to="/user/login">
-                      <Typography textAlign="center" sx={{ color: "black" }}>
-                        Ingresar
-                      </Typography>
-                    </Link>
-                  </MenuItem>
-                </>
-              )}
+                    </MenuItem>,
+                    user.is_admin ? null : ( // Verifica si el usuario no es un administrador
+                      <MenuItem key="history">
+                        <Link to="/user/history">
+                          <Typography
+                            textAlign="center"
+                            sx={{ color: "black" }}
+                          >
+                            Historial
+                          </Typography>
+                        </Link>
+                      </MenuItem>
+                    ),
+                    <MenuItem key="logout" onClick={handleLogout}>
+                      <Link to="/">
+                        <Typography textAlign="center" sx={{ color: "black" }}>
+                          Salir
+                        </Typography>
+                      </Link>
+                    </MenuItem>,
+                  ]
+                : [
+                    <MenuItem key="register" onClick={handleCloseUserMenu}>
+                      <Link to="/user/register">
+                        <Typography textAlign="center" sx={{ color: "black" }}>
+                          Registrarse
+                        </Typography>
+                      </Link>
+                    </MenuItem>,
+                    <MenuItem key="login" onClick={handleCloseUserMenu}>
+                      <Link to="/user/login">
+                        <Typography textAlign="center" sx={{ color: "black" }}>
+                          Ingresar
+                        </Typography>
+                      </Link>
+                    </MenuItem>,
+                  ]}
             </Menu>
           </Box>
         </Toolbar>
