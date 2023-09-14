@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router';
-import Navbar from './components/Navbar';
+// import ViejaNavbar from './components/Navbar';
 import Grid from './components/Grid';
 import Login from './components/Login';
 import { useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { Categories } from './components/Categories';
 import Sidebar from './components/Sidebar';
 import Checkout from './components/Checkout/Checkout';
 import History from './components/History';
+import Navbar from './components/Navbar'
 
 function App() {
     const [user, setUser] = useState(null);
@@ -66,7 +67,7 @@ function App() {
 
     return (
         <div>
-            <Navbar user={user} handleLogout={handleLogout} />
+            <Navbar user={user} handleLogout={handleLogout} clearSearch={()=>onSearch([])}/>
             <Routes>
                 <Route path="/user/register" element={<Register />} />
                 <Route path="/" element={<Grid />} />
