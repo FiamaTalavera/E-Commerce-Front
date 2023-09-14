@@ -13,25 +13,6 @@ import Checkout from './components/Checkout/Checkout';
 
 function App() {
     const [user, setUser] = useState(null);
-    const [cartItems, setCartItems] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        axios
-            .get(`http://localhost:3001/order`, { withCredentials: true })
-            .then((res) => {
-                console.log('LA DATA ------>', res.data);
-                setCartItems(res.data);
-                let initialTotal = 0;
-                res.data.forEach((item) => {
-                    initialTotal += item.quantity * item.product.price;
-                });
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log('ERROR ------>', error);
-            });
-    }, []);
 
     useEffect(() => {
         const storedAuth = localStorage.getItem('user');
@@ -72,7 +53,7 @@ function App() {
                 <Route path="/order" element={<Cart />} />
                 <Route path="/admin" element={<Sidebar />} />
                 <Route path="/admin" element={<Categories />} />
-                <Route path="/checkout" element={<Checkout cartItems={cartItems} />} />
+                <Route path="/checkout" element={<Checkout />} />
             </Routes>
         </div>
     );
