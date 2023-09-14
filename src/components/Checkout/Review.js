@@ -1,28 +1,14 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 
-export default function Review({ cartItems }) {
-    const [totalPrice, setTotalPrice] = useState(0);
-
-    const calculateTotalPrice = () => {
-        let total = 0;
-
-        cartItems.forEach((item) => {
-            console.log('ITEM --->', item);
-            total += item.quantity * item.product.price;
-        });
-
-        setTotalPrice(total);
-    };
-    useEffect(() => {
-        calculateTotalPrice();
-    }, [cartItems]);
-
+export default function Review() {
+    const cartItems = useSelector((state) => state.cart.cartItems)
+    const totalPrice = useSelector((state)=>state.cart.total)
+    
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>

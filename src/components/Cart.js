@@ -1,71 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchCartItems, incrementQuantity, decrementQuantity, removeFromCart } from '../state/cart';
 
 export const Cart = () => {
-    const [cartItems, setCartItems] = useState([]);
-    const [totalPrice, setTotalPrice] = useState(0);
+    const dispatch = useDispatch();
+    const cartItems = useSelector((state) => state.cart.cartItems);
+    const totalPrice = useSelector((state) => state.cart.total);
 
-    const calculateTotalPrice = () => {
-        let total = 0;
-
-        cartItems.forEach((item) => {
-            total += item.quantity * item.product.price;
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_URLBACK}/order`, { withCredentials: true }).then((res) => {
+            // este log muestra un array de objetos con todas las ordenes hechas
+            console.log('ORDENES --->', res.data);
+            dispatch(fetchCartItems(res.data));
         });
-
-        setTotalPrice(total);
-    };
+    }, [dispatch]);
 
     const handleIncrement = (item) => {
-        const updatedCart = cartItems.map((cartItem) => {
-            if (cartItem.id === item.id) {
-                const updatedQuantity = cartItem.quantity + 1;
-
-                axios
-                    .put(`http://localhost:3001/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
-                    .then((res) => {
-                        console.log('Cantidad actualizada en el back');
-                        cartItem.quantity = updatedQuantity;
-                        calculateTotalPrice();
-                    })
-                    .catch((error) => {
-                        console.error('Error actualizando cantidad en el back', error);
-                    });
-
-                return {
-                    ...cartItem,
-                    quantity: updatedQuantity,
-                };
-            }
-            return cartItem;
-        });
-        setCartItems(updatedCart);
+       const updatedQuantity = item.quantity + 1;
+        axios
+            .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
+            .then((res) => {
+                console.log('Cantidad actualizada en el back ( + )');
+                dispatch(incrementQuantity(item.id, updatedQuantity));
+            })
+            .catch((error) => {
+                console.error('Error actualizando cantidad en el back', error);
+            });
     };
 
     const handleDecrement = (item) => {
-        const updatedCart = cartItems.map((cartItem) => {
-            if (cartItem.id === item.id && cartItem.quantity > 1) {
-                const updatedQuantity = cartItem.quantity - 1;
-
-                axios
-                    .put(`http://localhost:3001/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
-                    .then((res) => {
-                        console.log('Cantidad actualizada en el back');
-                        cartItem.quantity = updatedQuantity;
-                        calculateTotalPrice();
-                    })
-                    .catch((error) => {
-                        console.error('Error actualizando cantidad en el back', error);
-                    });
-
-                return {
-                    ...cartItem,
-                    quantity: updatedQuantity,
-                };
-            }
-            return cartItem;
-        });
-        setCartItems(updatedCart);
+        if (item.quantity > 1) {
+            const updatedQuantity = item.quantity - 1;
+            axios
+                .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
+                .then((res) => {
+                    console.log('Cantidad actualizada en el back ( - )');
+                    dispatch(decrementQuantity(item.id, updatedQuantity));
+                })
+                .catch((error) => {
+                    console.error('Error actualizando cantidad en el back', error);
+                });
+        } else {
+            console.log('1 es el minimo');
+        }
     };
 
     const handleRemove = (item) => {
@@ -73,34 +52,15 @@ export const Cart = () => {
         const productId = item.product.id;
 
         axios
-            .delete(`http://localhost:3001/order/remove/${orderId}/${productId}`)
+            .delete(`${process.env.REACT_APP_URLBACK}/order/remove/${orderId}/${productId}`)
             .then((res) => {
-                console.log(`Producto removido --> ${res.data.message}`);
-
-                const updatedCart = cartItems.filter((cartItem) => cartItem.id !== orderId);
-                setCartItems(updatedCart);
+                console.log(`Producto removido --> `, item);
+                dispatch(removeFromCart({ orderId, productId }));
             })
             .catch((error) => {
                 console.error('Error al remover producto', error);
             });
     };
-
-    useEffect(() => {
-        axios
-            .get(`http://localhost:3001/order`, { withCredentials: true })
-            .then((res) => {
-                console.log('LA DATA ------>', res.data);
-                setCartItems(res.data);
-                let initialTotal = 0;
-                res.data.forEach((item) => {
-                    initialTotal += item.quantity * item.product.price;
-                });
-                setTotalPrice(initialTotal);
-            })
-            .catch((error) => {
-                console.log('ERROR ------>', error);
-            });
-    }, []);
 
     return (
         <div>
@@ -108,7 +68,7 @@ export const Cart = () => {
 
             <ul>
                 {cartItems.map((item) => (
-                    <li key={item.id}>
+                    <li key={`${item.id}-${item.product.id}`}>
                         <img style={{ height: '100px' }} src={`${item.product.imageURL}`} alt="no hay fotito" />
                         {item.product.name} - Cantidad: {item.quantity} - Precio Total: {item.product.price * item.quantity}
                         <button onClick={() => handleDecrement(item)}>-</button>

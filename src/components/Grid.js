@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Card from '../commons/Card';
 import { CardDetails } from '../commons/CardDetails';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../state/cart';
 
 const Grid = () => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [products, setProducts] = useState([]);
+    const dispatch = useDispatch()
 
     const handleShowMore = (product) => {
         axios
-            .get(`http://localhost:3001/products/${product.id}`)
+            .get(`${process.env.REACT_APP_URLBACK}/products/${product.id}`)
             .then((res) => {
                 setSelectedProduct(res.data);
             })
@@ -20,9 +23,9 @@ const Grid = () => {
 
     useEffect(() => {
         axios
-            .get('http://localhost:3001/products')
+            .get(`${process.env.REACT_APP_URLBACK}/products`)
             .then((res) => {
-                console.log('res.data --> ', res.data); /* sacar console log? */
+                console.log('Los productos --> ', res.data); /* sacar console log? */
                 setProducts(res.data);
             })
             .catch((err) => console.log(err));
@@ -30,9 +33,10 @@ const Grid = () => {
 
     const handleAddToCart = (product, quantity) => {
         axios
-            .post(`http://localhost:3001/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
+            .post(`${process.env.REACT_APP_URLBACK}/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
             .then((response) => {
                 console.log(`Se agrego ${product.name} al chango`);
+                dispatch(addToCart({product, quantity}))
             })
             .catch((error) => {
                 console.error('Error al agregar al chango:', error);

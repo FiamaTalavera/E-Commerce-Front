@@ -10,15 +10,17 @@ import { Cart } from './components/Cart';
 import { Categories } from './components/Categories';
 import Sidebar from './components/Sidebar';
 import Checkout from './components/Checkout/Checkout';
+import History from './components/History';
 
 function App() {
     const [user, setUser] = useState(null);
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         axios
-            .get(`http://localhost:3001/order`, { withCredentials: true })
+            .get(`${process.env.REACT_APP_URLBACK}/order`, { withCredentials: true })
             .then((res) => {
                 console.log('LA DATA ------>', res.data);
                 setCartItems(res.data);
@@ -46,7 +48,7 @@ function App() {
 
     const handleLogout = () => {
         axios
-            .post('http://localhost:3001/user/logout', null, {
+            .post(`${process.env.REACT_APP_URLBACK}/user/logout`, null, {
                 withCredentials: true,
             })
             .then((response) => {
@@ -72,7 +74,8 @@ function App() {
                 <Route path="/order" element={<Cart />} />
                 <Route path="/admin" element={<Sidebar />} />
                 <Route path="/admin" element={<Categories />} />
-                <Route path="/checkout" element={<Checkout cartItems={cartItems} />} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/user/history" element={<History />} />
             </Routes>
         </div>
     );
