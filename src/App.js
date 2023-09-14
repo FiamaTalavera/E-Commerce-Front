@@ -10,6 +10,7 @@ import { Cart } from './components/Cart';
 import { Categories } from './components/Categories';
 import Sidebar from './components/Sidebar';
 import Checkout from './components/Checkout/Checkout';
+import History from './components/History';
 
 function App() {
     const [user, setUser] = useState(null);
@@ -74,6 +75,7 @@ function App() {
                 <Route path="/admin" element={<Sidebar />} />
                 <Route path="/admin" element={<Categories />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/user/history" element={<History />} />
             </Routes>
         </div>
     );
