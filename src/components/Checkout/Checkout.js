@@ -58,7 +58,7 @@ export default function Checkout({ cartItems }) {
     const handleCheckout = () => {
         setActiveStep(steps.length);
         axios
-            .post('http://localhost:3001/order/checkout', {}, { withCredentials: true })
+            .post(`${process.env.REACT_APP_URLBACK}/order/checkout`, {}, { withCredentials: true })
             .then((res) => {
                 console.log('Orden pagada!');
             })

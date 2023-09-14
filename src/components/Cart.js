@@ -22,7 +22,7 @@ export const Cart = () => {
                 const updatedQuantity = cartItem.quantity + 1;
 
                 axios
-                    .put(`http://localhost:3001/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
+                    .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
                     .then((res) => {
                         console.log('Cantidad actualizada en el back');
                         cartItem.quantity = updatedQuantity;
@@ -48,7 +48,7 @@ export const Cart = () => {
                 const updatedQuantity = cartItem.quantity - 1;
 
                 axios
-                    .put(`http://localhost:3001/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
+                    .put(`${process.env.REACT_APP_URLBACK}/order/updateQuantity/${item.id}`, { quantity: updatedQuantity }, { withCredentials: true })
                     .then((res) => {
                         console.log('Cantidad actualizada en el back');
                         cartItem.quantity = updatedQuantity;
@@ -73,7 +73,7 @@ export const Cart = () => {
         const productId = item.product.id;
 
         axios
-            .delete(`http://localhost:3001/order/remove/${orderId}/${productId}`)
+            .delete(`${process.env.REACT_APP_URLBACK}/order/remove/${orderId}/${productId}`)
             .then((res) => {
                 console.log(`Producto removido --> ${res.data.message}`);
 
@@ -87,7 +87,7 @@ export const Cart = () => {
 
     useEffect(() => {
         axios
-            .get(`http://localhost:3001/order`, { withCredentials: true })
+            .get(`${process.env.REACT_APP_URLBACK}/order`, { withCredentials: true })
             .then((res) => {
                 console.log('LA DATA ------>', res.data);
                 setCartItems(res.data);

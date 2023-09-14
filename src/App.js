@@ -16,9 +16,10 @@ function App() {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
         axios
-            .get(`http://localhost:3001/order`, { withCredentials: true })
+            .get(`${process.env.REACT_APP_URLBACK}/order`, { withCredentials: true })
             .then((res) => {
                 console.log('LA DATA ------>', res.data);
                 setCartItems(res.data);
@@ -46,7 +47,7 @@ function App() {
 
     const handleLogout = () => {
         axios
-            .post('http://localhost:3001/user/logout', null, {
+            .post(`${process.env.REACT_APP_URLBACK}/user/logout`, null, {
                 withCredentials: true,
             })
             .then((response) => {
