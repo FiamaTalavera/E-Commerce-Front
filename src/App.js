@@ -1,6 +1,6 @@
 import './App.css';
 import { Route, Routes } from 'react-router';
-// import ViejaNavbar from './components/Navbar';
+import Navbar from './components/Navbar';
 import Grid from './components/Grid';
 import Login from './components/Login';
 import { useEffect, useState } from 'react';
@@ -10,31 +10,14 @@ import { Cart } from './components/Cart';
 import { Categories } from './components/Categories';
 import Sidebar from './components/Sidebar';
 import Checkout from './components/Checkout/Checkout';
+import { Home } from './components/Home';
+import { Searchbar } from './components/Searchbar';
 import History from './components/History';
-import Navbar from './components/Navbar'
 
 function App() {
     const [user, setUser] = useState(null);
-    const [cartItems, setCartItems] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_URLBACK}/order`, { withCredentials: true })
-            .then((res) => {
-                console.log('LA DATA ------>', res.data);
-                setCartItems(res.data);
-                let initialTotal = 0;
-                res.data.forEach((item) => {
-                    initialTotal += item.quantity * item.product.price;
-                });
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log('ERROR ------>', error);
-            });
-    }, []);
+    const [products, setProducts] = useState([]);
+    const [searchedProducts, setSearchProducts] = useState([])
 
     useEffect(() => {
         const storedAuth = localStorage.getItem('user');
@@ -42,6 +25,16 @@ function App() {
             setUser(JSON.parse(storedAuth));
         }
     }, []);
+
+        useEffect(() => {
+            axios
+                .get(`${process.env.REACT_APP_URLBACK}/products`)
+                .then((res) => {
+                    console.log('Los productos --> ', res.data); /* sacar console log? */
+                    setProducts(res.data);
+                })
+                .catch((err) => console.log(err));
+        }, []);
 
     const updateUser = (userAuth) => {
         setUser(userAuth);
@@ -65,17 +58,22 @@ function App() {
             });
     };
 
+        const onSearch = (searchRes) => {
+            setSearchProducts(searchRes);
+        };
+
     return (
         <div>
             <Navbar user={user} handleLogout={handleLogout} clearSearch={()=>onSearch([])}/>
             <Routes>
+                <Route path="/" element={<Home onSearch={onSearch} searchedProducts={searchedProducts} products={products} />} />
                 <Route path="/user/register" element={<Register />} />
-                <Route path="/" element={<Grid />} />
                 <Route path="/user/login" element={<Login updateUser={updateUser} />} />
                 <Route path="/order" element={<Cart />} />
                 <Route path="/admin" element={<Sidebar />} />
                 <Route path="/admin" element={<Categories />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/search" element={<Searchbar onSearch={onSearch} searchedProducts={searchedProducts} />} />
                 <Route path="/user/history" element={<History />} />
             </Routes>
         </div>

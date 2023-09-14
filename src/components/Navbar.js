@@ -15,10 +15,9 @@ import AdbIcon from "@mui/icons-material/Adb";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
-
 import logo from "../assets/Diseño sin título.png";
+
 const pages = ["Bebidas", "Dulces", "Salados"];
-const settings = ["Profile", "Orders History", "Logout"];
 
 function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -27,7 +26,7 @@ function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
+  
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
