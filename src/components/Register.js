@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -41,7 +42,7 @@ const Register = () => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:3001/user/register", data)
+      .post(`${process.env.REACT_APP_URLBACK}/user/register`, data)
       .then((response) => {
         const responseData = response.data;
         console.log("Registro exitoso!", responseData);
