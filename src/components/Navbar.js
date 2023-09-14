@@ -2,15 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/Diseño sin título.png";
 
-
-const Navbar = ({user, handleLogout}) => {
+const Navbar = ({ user, handleLogout }) => {
   const [isActive, setIsActive] = useState(false);
 
   const toggleNavbar = () => {
     setIsActive(!isActive);
   };
 
-  console.log('USUARIO ---->', user);
+  console.log("USUARIO ---->", user);
   return (
     <nav
       className="navbar is-light"
@@ -114,6 +113,13 @@ const Navbar = ({user, handleLogout}) => {
                 <Link className="button is-primary" to="/order">
                   Carrito
                 </Link>
+                
+
+                <Link className="button is-primary" to="/user/profile">
+                  <strong>Usuario</strong>
+                </Link>
+
+
               </div>
             </div>
           ) : (
