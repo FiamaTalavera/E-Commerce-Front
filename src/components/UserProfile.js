@@ -1,135 +1,140 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  TextField,
+  Button,
+  Container,
+  Grid,
+  Paper,
+  Typography,
+  Alert,
+} from "@mui/material";
 
-const UserProfile = ({ user }) => {
-  // configuro Hooks
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setIsEditedUser] = useState({ ...user });
+function UserProfile({ user, updateUser }) {
+  const [userData, setUserData] = useState({
+    email: user?.email || "", // Si user es null o undefined, establece una cadena vacía como valor predeterminado.
+    name: user?.name || "",
+    last_name: user?.last_name || "",
+    address: user?.address || "",
+  });
 
-  // cuando el usuario haga click en Editar Perfil, se ejecuta esta funcion
-  const handleEditClick = () => {
-    setIsEditing(true); // pongo true para que el usuario pueda editar.
+  const navigate = useNavigate();
+  const [isValidEmail, setIsValidEmail] = useState(true);
+  const [isValidName, setIsValidName] = useState(true);
+  const [nameErrorMessage, setNameErrorMessage] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+    // Validación del email
+    if (name === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setIsValidEmail(emailRegex.test(value));
+    }
+
+    // Validación del nombre (solo letras, sin números y no vacío)
+    const nameRegex = /^[A-Za-z\s]+$/;
+    const isValid = nameRegex.test(value) && value.trim() !== ""; // Nombre no vacío
+    setIsValidName(isValid);
+
+    // Actualiza el mensaje de error si el nombre no es válido
+    if (!isValid) {
+      setNameErrorMessage(
+        "El nombre debe contener solo letras y no puede estar vacío."
+      );
+    } else {
+      setNameErrorMessage(""); // Borra el mensaje de error si el nombre es válido
+    }
   };
 
-  const handleSaveClick = () => {
-    // funcion para guardar los cambios
+  const handleProfileUpdate = () => {
+    console.log("Botón de guardar clickeado");
+    // Realiza una solicitud al servidor para actualizar el perfil (como se mencionó en la respuesta anterior).
+    axios
+      .put("http://localhost:3001/user/profile", userData, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        // Actualiza el estado del usuario en la aplicación mediante la función updateUser.
+        updateUser(response.data);
 
-    setIsEditedUser(editedUser);
-    setIsEditing(false); // cambio a false para que no pueda editar
-  };
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    setIsEditedUser({
-      // actualizo con los cambios que se hicieron
-      ...editedUser,
-      [name]: type === "checkbox" ? checked : value,
-    });
+        // Redirige al usuario a la página de inicio.
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error al actualizar el perfil:", error);
+      });
   };
 
   return (
-    <div>
-      <h1>Perfil del Usuario</h1>
-      <div>
-         {/* <label htmlFor="id">ID: </label>
-        {isEditing ? (
-          <input type="text" id="id" name="id" value={editedUser.id} readOnly />
-        ) : (
-          <span>{editedUser.id}</span>
-        )}
-        <br /> */}
+    <Container>
+      <Paper elevation={3} style={{ padding: "20px" }}>
+        <Typography variant="h4" gutterBottom>
+          Perfil de Usuario
+        </Typography>
+        <form>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Email"
+                variant="outlined"
+                fullWidth
+                name="email"
+                value={userData.email}
+                onChange={handleInputChange}
+                error={!isValidEmail} // Cambiar el borde a rojo si el email no es válido
+                helperText={!isValidEmail ? "Email no válido" : ""}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Nombre"
+                variant="outlined"
+                fullWidth
+                name="name"
+                value={userData.name}
+                onChange={handleInputChange}
+                error={!isValidName}
+                helperText={nameErrorMessage}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Apellido"
+                variant="outlined"
+                fullWidth
+                name="last_name"
+                value={userData.last_name}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Dirección"
+                variant="outlined"
+                fullWidth
+                name="address"
+                value={userData.address}
+                onChange={handleInputChange}
+              />
+            </Grid>
+          </Grid>
 
-        <label htmlFor="name">Nombre: </label>
-        {isEditing ? (
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={editedUser.name}
-            onChange={handleChange}
-          />
-        ) : (
-          <span>{user.name}</span>
-        )}
-        <br />
-
-        <label htmlFor="last_name">Apellido: </label>
-        {isEditing ? (
-          <input
-            type="text"
-            id="last_name"
-            name="last_name"
-            value={editedUser.last_name}
-            onChange={handleChange}
-          />
-        ) : (
-          <span>{user.last_name}</span>
-        )}
-        <br />
-
-        <label htmlFor="email">Email: </label>
-        {isEditing ? (
-          <input
-            type="text"
-            id="email"
-            name="email"
-            value={editedUser.email}
-            onChange={handleChange}
-          />
-        ) : (
-          <span>{user.email}</span>
-        )}
-        <br />
-
-        <label htmlFor="address">Dirección: </label>
-        {isEditing ? (
-          <input
-            type="text"
-            id="address"
-            name="address"
-            value={editedUser.address}
-            onChange={handleChange}
-          />
-        ) : (
-          <span>{user.address}</span>
-        )}
-        <br />
-
-        {isEditing ? (
-          <button onClick={handleSaveClick}>Guardar Cambios</button>
-        ) : (
-          <button onClick={handleEditClick}>Editar Perfil</button>
-        )}
-      </div>
-    </div>
+          <div style={{ marginTop: "20px" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleProfileUpdate}
+              disabled={!isValidEmail || !isValidName}
+            >
+              Guardar Cambios
+            </Button>
+          </div>
+        </form>
+      </Paper>
+    </Container>
   );
-};
+}
 
 export default UserProfile;
-
-/* const UserProfile = ({ user }) => {
-  return (
-    <div>
-      <h1>Perfil del Usuario</h1>
-      <div>
-        <label htmlFor="id">id: </label>
-        <input type="text" id="id" value={user.id} readOnly /> <br></br>
-        <label htmlFor="name">Nombre: </label>
-        <input type="text" id="name" value={user.name} readOnly /> <br></br>
-        <label htmlFor="last_name">Apellido: </label>
-        <input type="text" id="last_name" value={user.last_name} readOnly />
-        <br></br>
-        <label htmlFor="email">email: </label>
-        <input type="text" id="email" value={user.email} readOnly /> <br></br>
-        <label htmlFor="adress">Dirección: </label>
-        <input type="text" id="adress" value={user.adress} readOnly /> <br></br>
-        <label htmlFor="is_admin">Administrador: </label>
-        <input type="checkbox" id="is_admin" value={user.is_admin} readOnly />
-        <br></br>
-      </div>
-    </div>
-  );
-}; */
-
-/* export default UserProfile;
- */

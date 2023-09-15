@@ -49,7 +49,10 @@ function App() {
         <Route path="/" element={<Grid />} />
         <Route path="/user/login" element={<Login updateUser={updateUser} />} />
         <Route path="/order" element={<Cart />} />
-        <Route path="/user/profile" element={<UserProfile user={user} />} />
+        <Route
+          path="/user/profile"
+          element={<UserProfile user={user} updateUser={updateUser} />}
+        />
       </Routes>
     </div>
   );
