@@ -15,6 +15,7 @@ import History from './components/History';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router";
+import { CssBaseline } from '@mui/material';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -70,51 +71,38 @@ function App() {
     };
 
   return (
-    <div>
-    <ToastContainer position="top-right" autoClose={1600} pauseOnFocusLoss={false} pauseOnHover={false} />
-      <Navbar
-        user={user}
-        handleLogout={handleLogout}
-        clearSearch={() => onSearch([])}
-      />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              onSearch={onSearch}
-              searchedProducts={searchedProducts}
-              products={products}
-            />
-          }
-        />
-        <Route path="/user/register" element={<Register />} />
-        <Route path="/user/login" element={<Login updateUser={updateUser} />} />
-        <Route path="/order" element={<Cart />} />
+      <div>
+          <ToastContainer position="top-right" autoClose={1600} pauseOnFocusLoss={false} pauseOnHover={false} />
+          <Navbar user={user} handleLogout={handleLogout} clearSearch={() => onSearch([])} />
+          <CssBaseline />
+          <Routes>
+              <Route path="/" element={<Home onSearch={onSearch} searchedProducts={searchedProducts} products={products} />} />
+              <Route path="/user/register" element={<Register />} />
+              <Route path="/user/login" element={<Login updateUser={updateUser} />} />
+              <Route path="/order" element={<Cart />} />
 
-        {user && user.is_admin ? (
-          <>
-            <Route path="/admin" element={<Sidebar />} />
-            <Route path="/admin" element={<Categories />} />
-          </>
-        ): <Route path="/admin" element={<div> 
-        Acceso Denegado
-        <button onClick={() => navigate("/")}> Volver al Inicio </button>
-        </div>} />}
-        
-        <Route path="/checkout" element={<Checkout />} />
-        <Route
-          path="/search"
-          element={
-            <Searchbar
-              onSearch={onSearch}
-              searchedProducts={searchedProducts}
-            />
-          }
-        />
-        <Route path="/user/history" element={<History />} />
-      </Routes>
-    </div>
+              {user && user.is_admin ? (
+                  <>
+                      <Route path="/admin" element={<Sidebar />} />
+                      <Route path="/admin" element={<Categories />} />
+                  </>
+              ) : (
+                  <Route
+                      path="/admin"
+                      element={
+                          <div>
+                              Acceso Denegado
+                              <button onClick={() => navigate('/')}> Volver al Inicio </button>
+                          </div>
+                      }
+                  />
+              )}
+
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/search" element={<Searchbar onSearch={onSearch} searchedProducts={searchedProducts} />} />
+              <Route path="/user/history" element={<History />} />
+          </Routes>
+      </div>
   );
 }
 
