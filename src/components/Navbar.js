@@ -8,19 +8,24 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import logo from "../assets/Diseño sin título.png";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import axios from "axios";
 
 const pages = ["Bebidas", "Dulces", "Salados"];
 
 function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [age, setAge] = React.useState("");
+  const [categories, setCategories] = React.useState([]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -36,6 +41,25 @@ function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  React.useEffect(() => {
+    allCategories();
+  }, []);
+
+  const allCategories = () => {
+    axios
+      .get(`${process.env.REACT_APP_URLBACK}/admin/categories`)
+      .then((res) => {
+        setCategories(res.data);
+      })
+      .catch((error) => {
+        console.error("Error al traer las categorías", error);
+      });
   };
 
   return (
@@ -66,6 +90,26 @@ function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
           >
             EN EL HORNO
           </Typography>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-standard-label">
+                Categorías
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={age}
+                onChange={handleChange}
+                label="Productos"
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -122,17 +166,7 @@ function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
           >
             EN EL HORNO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
 
           <Box sx={{ flexGrow: 0 }}>
             {user ? (
