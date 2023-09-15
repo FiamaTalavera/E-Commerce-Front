@@ -4,11 +4,11 @@ import { CardDetails } from '../commons/CardDetails';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../state/cart';
+import { toast } from 'react-toastify';
 
-const Grid = () => {
+const Grid = ({products}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [products, setProducts] = useState([]);
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const handleShowMore = (product) => {
         axios
@@ -21,25 +21,17 @@ const Grid = () => {
             });
     };
 
-    useEffect(() => {
-        axios
-            .get(`${process.env.REACT_APP_URLBACK}/products`)
-            .then((res) => {
-                console.log('Los productos --> ', res.data); /* sacar console log? */
-                setProducts(res.data);
-            })
-            .catch((err) => console.log(err));
-    }, []);
 
     const handleAddToCart = (product, quantity) => {
         axios
             .post(`${process.env.REACT_APP_URLBACK}/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
             .then((response) => {
-                console.log(`Se agrego ${product.name} al chango`);
-                dispatch(addToCart({product, quantity}))
+                toast.success(`Se agrego ${product.name} al chango`)
+                dispatch(addToCart({ product, quantity }));
             })
             .catch((error) => {
                 console.error('Error al agregar al chango:', error);
+                toast.warn(`Necesitas loguearte.`);
             });
     };
 

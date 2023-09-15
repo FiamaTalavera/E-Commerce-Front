@@ -16,6 +16,7 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LocalCafeIcon from "@mui/icons-material/LocalCafe";
 import RegisterImg from "../assets/RegisterImg.png";
+import { toast } from 'react-toastify';
 
 const Register = ({ updateUser }) => {
   const [error, setError] = useState("");
@@ -162,12 +163,12 @@ const Register = ({ updateUser }) => {
     axios
       .post(`${process.env.REACT_APP_URLBACK}/user/register`, data)
       .then((response) => {
-        const responseData = response.data;
-        console.log("Registro exitoso!", responseData);
+        toast.success('Registro exitoso!')
         setIsRegistered(true);
         navigate("/user/login");
       })
       .catch((error) => {
+        toast.error('Error de registro')
         console.error(error);
       });
   };

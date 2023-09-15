@@ -1,137 +1,277 @@
-import React, { useState } from "react";
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
 import { Link } from "react-router-dom";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import logo from "../assets/Diseño sin título.png";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import axios from "axios";
 
+const pages = ["Bebidas", "Dulces", "Salados"];
 
-const Navbar = ({user, handleLogout}) => {
-  const [isActive, setIsActive] = useState(false);
+function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
+  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [age, setAge] = React.useState("");
+  const [categories, setCategories] = React.useState([]);
 
-  const toggleNavbar = () => {
-    setIsActive(!isActive);
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
   };
 
-  console.log('USUARIO ---->', user);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleChange = (event) => {
+    setAge(event.target.value);
+  };
+
+  React.useEffect(() => {
+    allCategories();
+  }, []);
+
+  const allCategories = () => {
+    axios
+      .get(`${process.env.REACT_APP_URLBACK}/admin/categories`)
+      .then((res) => {
+        setCategories(res.data);
+      })
+      .catch((error) => {
+        console.error("Error al traer las categorías", error);
+      });
+  };
+
   return (
-    <nav
-      className="navbar is-light"
-      role="navigation"
-      aria-label="main navigation"
-    >
-      <div className="navbar-brand">
-        <Link className="navbar-item" to="/">
-          <img src={logo} width="30" height="200" alt="logo" />
-        </Link>
+    <AppBar position="static" sx={{ backgroundColor: "#BD8544" }}>
+      <Container maxWidth="xl">
+        <Toolbar disableGutters color="color">
+          <img
+            src={logo}
+            alt="Nombre de tu sitio web"
+            width="50"
+            height="330"
+            style={{ marginRight: "30px" }}
+          />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            onClick={clearSearch}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            EN EL HORNO
+          </Typography>
+          <Box sx={{ minWidth: 120 }}>
+            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+              <InputLabel id="demo-simple-select-standard-label">
+                Categorías
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={age}
+                onChange={handleChange}
+                label="Productos"
+              >
+                {categories.map((category) => (
+                  <MenuItem key={category.id} value={category.id}>
+                    {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
 
-        <button
-          onClick={toggleNavbar}
-          className={`navbar-burger ${isActive ? "is-active" : ""}`}
-          aria-label="menu"
-          aria-expanded={isActive ? "true" : "false"}
-          data-target="navbarBasicExample"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </button>
-      </div>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: "block", md: "none" },
+              }}
+            >
+              {pages.map((page) => (
+                <MenuItem key={page} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            onClick={clearSearch}
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            EN EL HORNO
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
 
-      <div id="navbarBasicExample" className="navbar-menu">
-        <div className="navbar-start">
-          <div className="navbar-item has-dropdown is-hoverable">
-            <Link className="navbar-link" to="#">
-              Bebidas
-            </Link>
-
-            <div className="navbar-dropdown">
-              <Link className="navbar-item" to="#">
-                Cafetería
-              </Link>
-              <Link className="navbar-item" to="#">
-                Jugos
-              </Link>
-              <Link className="navbar-item" to="#">
-                Licuados
-              </Link>
-              <hr className="navbar-divider" />
-              <Link className="navbar-item" to="#">
-                Todo
-              </Link>
-            </div>
-          </div>
-
-          <div className="navbar-item has-dropdown is-hoverable">
-            <Link className="navbar-link" to="#">
-              Dulces
-            </Link>
-
-            <div className="navbar-dropdown">
-              <Link className="navbar-item" to="#">
-                Tortas
-              </Link>
-              <Link className="navbar-item" to="#">
-                Galletas
-              </Link>
-              <Link className="navbar-item" to="#">
-                Panadería
-              </Link>
-              <hr className="navbar-divider" />
-              <Link className="navbar-item" to="#">
-                Todo
-              </Link>
-            </div>
-          </div>
-
-          <div className="navbar-item has-dropdown is-hoverable">
-            <Link className="navbar-link" to="#">
-              Salados
-            </Link>
-
-            <div className="navbar-dropdown">
-              <Link className="navbar-item" to="#">
-                Sandwiches
-              </Link>
-              <Link className="navbar-item" to="#">
-                Tostones
-              </Link>
-              <Link className="navbar-item" to="#">
-                Panificados
-              </Link>
-              <hr className="navbar-divider" />
-              <Link className="navbar-item" to="#">
-                Todo
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="navbar-end">
-          {user ? (
-            <div className="navbar-item">
-              <div className="buttons">
-                <button className="button is-danger" onClick={handleLogout}>
-                  Salir
-                </button>
-                <Link className="button is-primary" to="/order">
-                  Carrito
+          <Box sx={{ flexGrow: 0 }}>
+            {user ? (
+              user.is_admin ? (
+                <Link to="/admin">
+                  <Tooltip title="Tablero">
+                    <IconButton sx={{ marginRight: 5 }}>
+                      <SpaceDashboardIcon />{" "}
+                    </IconButton>
+                  </Tooltip>
                 </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="navbar-item">
-              <div className="buttons">
-                <Link className="button is-primary" to="/user/register">
-                  <strong>Registrarse</strong>
+              ) : (
+                <Link to="/order">
+                  <Tooltip title="Carrito">
+                    <IconButton sx={{ marginRight: 5 }}>
+                      <ShoppingCartIcon />
+                    </IconButton>
+                  </Tooltip>
                 </Link>
-                <Link className="button is-light" to="/user/login">
-                  Ingresar
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </nav>
+              )
+            ) : (
+              ""
+            )}
+            <Tooltip title="Opciones">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                {user ? (
+                  <Avatar
+                    alt={user.name}
+                    src="https://media.istockphoto.com/id/1145853297/es/vector/icono-plano-de-croissant-pixel-perfect-para-m%C3%B3vil-y-web.jpg?s=612x612&w=0&k=20&c=BMxQ22rww2sSlBwZf-4i9YBkZGgmM4MziDVQon_YdEI="
+                  />
+                ) : (
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="https://static.vecteezy.com/system/resources/previews/007/214/842/non_2x/croissant-glyph-icon-crescent-roll-silhouette-symbol-negative-space-isolated-illustration-vector.jpg"
+                  />
+                )}
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {user
+                ? [
+                    <MenuItem key="profile">
+                      <Link to="/user/profile">
+                        <Typography textAlign="center" sx={{ color: "black" }}>
+                          Perfil
+                        </Typography>
+                      </Link>
+                    </MenuItem>,
+                    user.is_admin ? null : ( // Verifica si el usuario no es un administrador
+                      <MenuItem key="history">
+                        <Link to="/user/history">
+                          <Typography
+                            textAlign="center"
+                            sx={{ color: "black" }}
+                          >
+                            Historial
+                          </Typography>
+                        </Link>
+                      </MenuItem>
+                    ),
+                    <MenuItem key="logout" onClick={handleLogout}>
+                      <Link to="/">
+                        <Typography textAlign="center" sx={{ color: "black" }}>
+                          Salir
+                        </Typography>
+                      </Link>
+                    </MenuItem>,
+                  ]
+                : [
+                    <MenuItem key="register" onClick={handleCloseUserMenu}>
+                      <Link to="/user/register">
+                        <Typography textAlign="center" sx={{ color: "black" }}>
+                          Registrarse
+                        </Typography>
+                      </Link>
+                    </MenuItem>,
+                    <MenuItem key="login" onClick={handleCloseUserMenu}>
+                      <Link to="/user/login">
+                        <Typography textAlign="center" sx={{ color: "black" }}>
+                          Ingresar
+                        </Typography>
+                      </Link>
+                    </MenuItem>,
+                  ]}
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
-};
+}
 
-export default Navbar;
+export default ResponsiveAppBar;

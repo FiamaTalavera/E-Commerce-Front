@@ -8,6 +8,7 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { toast } from 'react-toastify';
 
 export const Categories = () => {
   const [name, setName] = useState("");
@@ -94,6 +95,7 @@ export const Categories = () => {
         name: editingCategoryName,
       })
       .then((res) => {
+        toast.success('Categoría modificada correctamente')
         console.log("Categoría modificada:", res.data);
         setEdit(false);
         setEditingCategoryId(null);
@@ -101,6 +103,7 @@ export const Categories = () => {
         allCategories();
       })
       .catch((error) => {
+        toast.error('Error al modificar categoría');
         console.error("Error al modificar categoría:", error);
       });
   };
@@ -111,11 +114,13 @@ export const Categories = () => {
     axios
       .post(`${process.env.REACT_APP_URLBACK}/admin/categories`, { name })
       .then((res) => {
+        toast.success('Categoría creada correctamente');
         console.log("Categoría creada:", res.data);
         setName("");
         allCategories();
       })
       .catch((error) => {
+        toast.error('Error al crear categoría');
         console.error("Error al crear categoría:", error);
       });
   };
@@ -127,6 +132,7 @@ export const Categories = () => {
         setCategories(res.data);
       })
       .catch((error) => {
+        toast.error('Error al traer las categorías')
         console.error("Error al traer las categorías", error);
       });
   };
@@ -135,33 +141,42 @@ export const Categories = () => {
     axios
       .delete(`${process.env.REACT_APP_URLBACK}/admin/categories/${id}`)
       .then((res) => {
+        toast.info('Categoría eliminada correctamente')
         console.log("Categoría eliminada:", res.data);
         allCategories();
       })
       .catch((error) => {
+        toast.error('Error al eliminar categoría')
         console.error("Error al eliminar categoría:", error);
       });
   };
 
   return (
-    <>
-      <div
-        style={{
-          position: "fixed",
-          top: "20%",
-          right: "20%",
-          height: 400,
-          width: "50%",
-        }}
-      >
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        marginTop: "10%"
+      }}
+    >
+      <div>
         <DataGrid
           rows={categories}
           columns={columns}
-          pageSizeOptions={[5, 10]}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
+              },
+            },
+          }}
+          pageSizeOptions={[5]}
         />
       </div>
 
-      <div style={{ marginTop: "30%", textAlign: "center" }}>
+      <div style={{ marginTop: "3%", textAlign: "center" }}>
         <Box
           component="form"
           sx={{
@@ -186,6 +201,6 @@ export const Categories = () => {
           </Fab>
         </Box>
       </div>
-    </>
+    </div>
   );
 };
