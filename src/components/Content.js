@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import Card from '../commons/Card';
+import React, { useState } from 'react';
+import CardProduct from '../commons/CardProduct';
 import { CardDetails } from '../commons/CardDetails';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../state/cart';
 import { toast } from 'react-toastify';
 
-const Grid = ({products}) => {
+const Content = ({products}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const dispatch = useDispatch();
+    // console.log('PRODUCTS --->', products);
 
     const handleShowMore = (product) => {
         axios
@@ -42,7 +43,7 @@ const Grid = ({products}) => {
                 <div className="columns is-multiline">
                     {products.map((product, i) => (
                         <div className="column is-4" key={i}>
-                            <Card
+                            <CardProduct
                                 product={product}
                                 onShowMore={() => {
                                     handleShowMore(product);
@@ -57,4 +58,4 @@ const Grid = ({products}) => {
     );
 };
 
-export default Grid;
+export default Content;

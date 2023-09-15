@@ -100,6 +100,7 @@ function App() {
 
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/search" element={<Searchbar onSearch={onSearch} searchedProducts={searchedProducts} />} />
+              <Route path="/searchCategory" element={<Searchbar onSearch={onSearch} searchedProducts={searchedProducts} />} />
               <Route path="/user/history" element={<History />} />
           </Routes>
       </div>
