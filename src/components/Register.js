@@ -34,7 +34,7 @@ const Register = ({ updateUser }) => {
     confirmPassword: "",
     last_name: "",
     address: "",
-    is_admin: false,
+    snippet: "",
   });
 
   const handleChange = (e) => {
@@ -319,12 +319,12 @@ const Register = ({ updateUser }) => {
                 margin="normal"
                 fullWidth
                 type="text"
-                id="is_admin"
+                id="snippet"
                 label="Administrador"
-                name="is_admin"
-                value={data.is_admin}
+                name="snippet"
+                value={data.snippet}
                 onChange={handleChange}
-                autoComplete="is_admin"
+                autoComplete="snippet"
                 autoFocus
               />
 
