@@ -2,58 +2,24 @@
     text-align: center;
 }
 
-/* se lo tuve que agregar para que quede mas centrado el modal de los productos */
+/* Card-Details */
 
 .modal-content {
     margin-top: 140px;
     width: 50%;
 }
 
-/* para maquetar searchbar */
+/* Searchbar*/
 
-.search-container{
-    border: 2px solid;
-    padding: 12px;
-    width: 93%;
-    margin: 0 auto;
-}
-
-.search-container h1{
-    border: 2px solid;
-    width: fit-content;
-    padding: 10px;
-    font-size: 30px;
-}
-
-.search-container p{
-    margin-top: 20px;
-    border: 2px solid;
-    padding: 10px;
-    width: fit-content;
-}
-
-.searchbar{
-    text-align: center;
-    border: 2px solid;
-    padding: 10px;
-    margin-top: 30px;
-}
-
-.searchbar input{
-    outline: none;
-    width: 70%;
-    font-size: 20px;
-    padding: 7px;
-    border: 1px solid rgba(0, 0, 0, 0.59);
-    border-radius: 7px;
-    transition: ease-in-out 0.2s;
-}
-
-.searchbar input:focus{
-    border: 2px solid rgba(0, 0, 0, 0.495);
-}
-
-.searchbar button{
-    margin: 10px;
-    padding: 10px;
+.header {
+    height: 400px;
+    background-image: url('./assets/fotiyo.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    padding: 30px;
 }

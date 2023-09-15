@@ -3,6 +3,7 @@ import Grid from './Grid';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
+import { Typography, TextField, Button, Container, Box, Paper } from '@mui/material';
 
 export const Searchbar = ({ onSearch, searchedProducts }) => {
     const [searchProduct, setSearchProduct] = useState('');
@@ -12,7 +13,7 @@ export const Searchbar = ({ onSearch, searchedProducts }) => {
         axios
             .get(`http://localhost:3001/products/search/${searchProduct}`)
             .then((res) => {
-                    onSearch(res.data);
+                onSearch(res.data);
             })
             .catch((error) => {
                 toast.warn('No hay productos');
@@ -26,7 +27,7 @@ export const Searchbar = ({ onSearch, searchedProducts }) => {
             handleSearch();
             navigate(`/search?query=${searchProduct}`);
         } else {
-            toast.info('No buscaste nada!')
+            toast.info('No buscaste nada!');
         }
     };
 
@@ -38,6 +39,52 @@ export const Searchbar = ({ onSearch, searchedProducts }) => {
 
     return (
         <div>
+            <Box component={Paper} elevation={3} className="header" p={3} width="93%" mx="auto">
+                <Container style={{marginTop:'50px'}} maxWidth="md">
+                    <Typography variant="h3" align="center">
+                        En el horno
+                    </Typography>
+                    <Typography variant="subtitle1" align="center" mt={2}>
+                        Bienvenidos a nuestro humilde e-commerce
+                    </Typography>
+                    <form onSubmit={handleSearchSubmit}>
+                        <Box display="flex" alignItems="center" justifyContent="center" mt={4}>
+                            <TextField variant="outlined" type="text" name="search" placeholder="Qué se te antoja?" onChange={handleInputChange} mr={2} />
+                            <Button variant="contained" color="primary" type="submit" style={{marginLeft:'10px'}}>
+                                BUSCAR
+                            </Button>
+                        </Box>
+                    </form>
+                </Container>
+            </Box>
+                {searchedProducts.length === 0 ? null : <Grid products={searchedProducts} />}
+        </div>
+    );
+};
+        {/* <div className='header'>
+            <Container maxWidth="md">
+                <Box mt={4} p={3} boxShadow={3}>
+                    <Typography variant="h4" align="center">
+                        En el horno
+                    </Typography>
+                    <Typography variant="subtitle1" align="center" mt={2}>
+                        Bienvenidos a nuestro humilde e-commerce
+                    </Typography>
+                    <form onSubmit={handleSearchSubmit}>
+                        <Box display="flex" alignItems="center" justifyContent="center" mt={4}>
+                            <TextField fullWidth variant="outlined" type="text" name="search" placeholder="Qué se te antoja?" onChange={handleInputChange} />
+                            <Button variant="contained" color="primary" type="submit">
+                                BUSCAR
+                            </Button>
+                        </Box>
+                    </form>
+                </Box>
+                {searchedProducts.length === 0 ? null : <Grid products={searchedProducts} />}
+            </Container>
+        </div> */}
+
+
+   /*      <div>
             <div className="search-container">
                 <h1>En el horno</h1>
                 <p>Bienvenidos a nuestro humilde e-commerce</p>
@@ -47,6 +94,4 @@ export const Searchbar = ({ onSearch, searchedProducts }) => {
                 </div>
             </div>
             {searchedProducts.length === 0 ? null : <Grid products={searchedProducts} />}
-        </div>
-    );
-};
+        </div> */
