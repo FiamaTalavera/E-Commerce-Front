@@ -8,7 +8,7 @@ import { Box } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 export const Categories = () => {
   const [name, setName] = useState("");
@@ -91,20 +91,45 @@ export const Categories = () => {
 
   const handleSave = () => {
     axios
-      .put(`${process.env.REACT_APP_URLBACK}/admin/categories/${editingCategoryId}`, {
-        name: editingCategoryName,
-      })
+      .get(`${process.env.REACT_APP_URLBACK}/admin/categories`)
       .then((res) => {
-        toast.success('Categoría modificada correctamente')
-        console.log("Categoría modificada:", res.data);
-        setEdit(false);
-        setEditingCategoryId(null);
-        setEditingCategoryName("");
-        allCategories();
+        const existingCategories = res.data;
+        const existingCategory = existingCategories.find(
+          (category) => category.name === editingCategoryName
+        );
+
+        if (existingCategory) {
+          toast.error("Nombre de categoria ya existente");
+          console.error("Nombre de categoria ya existente", existingCategory);
+          setEdit(false);
+          setEditingCategoryId(null);
+          setEditingCategoryName("");
+          allCategories();
+        } else {
+          axios
+            .put(
+              `${process.env.REACT_APP_URLBACK}/admin/categories/${editingCategoryId}`,
+              {
+                name: editingCategoryName,
+              }
+            )
+            .then((res) => {
+              toast.success("Categoría modificada correctamente");
+              console.log("Categoría modificada:", res.data);
+              setEdit(false);
+              setEditingCategoryId(null);
+              setEditingCategoryName("");
+              allCategories();
+            })
+            .catch((error) => {
+              toast.error("Error al modificar categoría");
+              console.error("Error al modificar categoría:", error);
+            });
+        }
       })
       .catch((error) => {
-        toast.error('Error al modificar categoría');
-        console.error("Error al modificar categoría:", error);
+        toast.error("Error al obtener las categorias");
+        console.error("Error al obtener las categorias", error);
       });
   };
 
@@ -112,16 +137,34 @@ export const Categories = () => {
     e.preventDefault();
 
     axios
-      .post(`${process.env.REACT_APP_URLBACK}/admin/categories`, { name })
+      .get(`${process.env.REACT_APP_URLBACK}/admin/categories`)
       .then((res) => {
-        toast.success('Categoría creada correctamente');
-        console.log("Categoría creada:", res.data);
-        setName("");
-        allCategories();
+        const existingCategories = res.data;
+        const existingCategory = existingCategories.find(
+          (category) => category.name === name
+        );
+
+        if (existingCategory) {
+          toast.error("Nombre de categoria ya existente");
+          console.error("Nombre de categoria ya existente", existingCategory);
+        } else {
+          axios
+            .post(`${process.env.REACT_APP_URLBACK}/admin/categories`, { name })
+            .then((res) => {
+              toast.success("Categoría creada correctamente");
+              console.log("Categoría creada:", res.data);
+              setName("");
+              allCategories();
+            })
+            .catch((error) => {
+              toast.error("Error al crear categoría");
+              console.error("Error al crear categoría:", error);
+            });
+        }
       })
       .catch((error) => {
-        toast.error('Error al crear categoría');
-        console.error("Error al crear categoría:", error);
+        toast.error("Error al obtener las categorias");
+        console.error("Error al obtener las categorias", error);
       });
   };
 
@@ -132,7 +175,7 @@ export const Categories = () => {
         setCategories(res.data);
       })
       .catch((error) => {
-        toast.error('Error al traer las categorías')
+        toast.error("Error al traer las categorías");
         console.error("Error al traer las categorías", error);
       });
   };
@@ -141,12 +184,12 @@ export const Categories = () => {
     axios
       .delete(`${process.env.REACT_APP_URLBACK}/admin/categories/${id}`)
       .then((res) => {
-        toast.info('Categoría eliminada correctamente')
+        toast.info("Categoría eliminada correctamente");
         console.log("Categoría eliminada:", res.data);
         allCategories();
       })
       .catch((error) => {
-        toast.error('Error al eliminar categoría')
+        toast.error("Error al eliminar categoría");
         console.error("Error al eliminar categoría:", error);
       });
   };
@@ -158,7 +201,7 @@ export const Categories = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        marginTop: "10%"
+        marginTop: "10%",
       }}
     >
       <div>
