@@ -13,52 +13,19 @@ import { Link } from "react-router-dom";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import logo from "../assets/Diseño sin título.png";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import axios from "axios";
 
 
 function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [age, setAge] = React.useState("");
-  const [categories, setCategories] = React.useState([]);
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
-  React.useEffect(() => {
-    allCategories();
-  }, []);
-
-  const allCategories = () => {
-    axios
-      .get(`${process.env.REACT_APP_URLBACK}/admin/categories`)
-      .then((res) => {
-        setCategories(res.data);
-      })
-      .catch((error) => {
-        console.error("Error al traer las categorías", error);
-      });
-  };
 
   return (
     <AppBar position="static" sx={{ backgroundColor: "#BD8544" }}>
@@ -88,27 +55,6 @@ function ResponsiveAppBar({ user, handleLogout, clearSearch }) {
           >
             EN EL HORNO
           </Typography>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="demo-simple-select-standard-label">
-                Categorías
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-standard-label"
-                id="demo-simple-select-standard"
-                value={age}
-                onChange={handleChange}
-                label="Productos"
-              >
-                {categories.map((category) => (
-                  <MenuItem key={category.id} value={category.id}>
-                    {category.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-
           <Typography
             variant="h5"
             noWrap
