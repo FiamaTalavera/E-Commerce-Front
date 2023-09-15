@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import * as React from "react";
@@ -13,33 +12,152 @@ import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import LocalCafeIcon from "@mui/icons-material/LocalCafe";
+import RegisterImg from "../assets/RegisterImg.png";
 
-const Register = () => {
+const Register = ({ updateUser }) => {
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [addressError, setAddressError] = useState("");
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     last_name: "",
     address: "",
-    snippet: "",
+    is_admin: false,
   });
 
-  const [isRegistered, setIsRegistered] = useState(false);
-
   const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    // Verifica si el tipo de campo es un checkbox
+    const newValue = type === "checkbox" ? checked : value;
+
+    setData({
+      ...data,
+      [name]: newValue,
+    });
+
+    // Llama a la validación de contraseña aquí
+    if (name === "password") {
+      validatePassword();
+    } else if (name === "name") {
+      validateName(newValue);
+    }
+  };
+
+  const handleEmailChange = (e) => {
     const { name, value } = e.target;
+    // Actualiza el valor del campo de correo electrónico en el estado
     setData({
       ...data,
       [name]: value,
     });
+
+    // Valida el correo electrónico
+    validateEmail(value);
+  };
+
+  const validateEmail = (emailValue) => {
+    if (!emailValue) {
+      setEmailError("El correo electrónico es obligatorio");
+    } else if (!/\S+@\S+\.\S+/.test(emailValue)) {
+      setEmailError("El correo electrónico no es válido");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const validatePassword = () => {
+    if (!data.password) {
+      setPasswordError("La contraseña es obligatoria.");
+    } else if (data.password.length < 8) {
+      setPasswordError("La contraseña debe tener al menos 8 caracteres.");
+    } else {
+      setPasswordError("");
+    }
+  };
+
+  const validateName = (nameValue) => {
+    if (!nameValue) {
+      setNameError("El nombre es obligatorio");
+    } else if (!/^[a-zA-Z]+$/.test(nameValue)) {
+      setNameError("El nombre debe contener solo letras");
+    } else {
+      setNameError("");
+    }
+  };
+
+  const validateLastName = (nameValue) => {
+    if (!nameValue) {
+      setLastNameError("El apellido es obligatorio");
+    } else if (!/^[a-zA-Z]+$/.test(nameValue)) {
+      setLastNameError("El apellido debe contener solo letras");
+    } else {
+      setLastNameError("");
+    }
+  };
+
+  const validateAddress = (addressValue) => {
+    if (!addressValue) {
+      setAddressError("La dirección es obligatoria");
+    } else {
+      setAddressError(""); // Reinicia el mensaje de error si la dirección está presente
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    validateEmail(data.email);
+    validatePassword(data.password);
+    validateName(data.name);
+    validateLastName(data.last_name);
+    validateAddress(data.address);
+
+    if (data.password !== data.confirmPassword) {
+      // Las contraseñas no coinciden, muestro un mensaje de error
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+
+    if (
+      !data.name ||
+      typeof data.name !== "string" ||
+      data.name.trim().length < 3 ||
+      !/^[a-zA-Z]+$/.test(data.name)
+    ) {
+      setNameError("El nombre es obligatorio y no puede contener números.");
+      return;
+    }
+
+    if (
+      !data.last_name ||
+      typeof data.last_name !== "string" ||
+      data.last_name.trim().length < 2 ||
+      !/^[a-zA-Z]+$/.test(data.last_name)
+    ) {
+      setLastNameError("El apellido es obligatorio");
+      return; // Evita continuar con el registro
+    }
+
+    // Validación adicional para el campo "Dirección"
+    if (
+      !data.address ||
+      typeof data.address !== "string" ||
+      data.address.trim().length === 0
+    ) {
+      setAddressError("La dirección es obligatoria");
+      return; // Evita continuar con el registro
+    }
 
     axios
       .post(`${process.env.REACT_APP_URLBACK}/user/register`, data)
@@ -58,26 +176,6 @@ const Register = () => {
     return null;
   }
 
-  function Copyright(props) {
-    return (
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        {...props}
-      >
-        {"Copyright © "}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
-        </Link>{" "}
-        {new Date().getFullYear()}
-        {"."}
-      </Typography>
-    );
-  }
-
-  // TODO remove, this demo shouldn't need to reset the theme.
-
   const defaultTheme = createTheme();
 
   return (
@@ -90,8 +188,8 @@ const Register = () => {
           sm={4}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundImage: `url(${RegisterImg})`,
+            objectFit: "contain",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -111,11 +209,11 @@ const Register = () => {
               alignItems: "center",
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-              <LockOutlinedIcon />
+            <Avatar sx={{ m: 1, backgroundColor: "#BD8544" }}>
+              <LocalCafeIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              Crea tu cuenta
             </Typography>
             <Box
               component="form"
@@ -127,47 +225,117 @@ const Register = () => {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                type="text"
+                id="name"
+                label="Nombre"
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+                autoComplete="name"
                 autoFocus
+                error={!!nameError}
+                helperText={nameError}
               />
+
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Password"
+                type="email"
+                id="email"
+                label="Correo electrónico"
+                name="email"
+                value={data.email}
+                onChange={handleEmailChange}
+                error={!!emailError} // Indica si hay un error
+                helperText={emailError} // Muestra el mensaje de error
+                autoComplete="email"
+                autoFocus
+              />
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
                 type="password"
+                name="password"
+                label="Contraseña"
                 id="password"
                 autoComplete="current-password"
+                value={data.password}
+                onChange={handleChange}
+                error={!!passwordError}
+                helperText={passwordError}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                type="password"
+                name="confirmPassword"
+                label="Confirmar Contraseña"
+                id="confirmPassword"
+                autoComplete="new-password"
+                value={data.confirmPassword}
+                onChange={handleChange}
               />
+              {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                type="text"
+                id="last_name"
+                label="Apellido"
+                name="last_name"
+                value={data.last_name}
+                onChange={handleChange}
+                autoComplete="last_name"
+                autoFocus
+                error={!!lastNameError}
+                helperText={lastNameError}
+              />
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                type="text"
+                id="address"
+                label="Dirección"
+                name="address"
+                value={data.address}
+                onChange={handleChange}
+                autoComplete="address"
+                autoFocus
+                error={!!addressError}
+                helperText={addressError}
+              />
+
+              <TextField
+                margin="normal"
+                fullWidth
+                type="text"
+                id="is_admin"
+                label="Administrador"
+                name="is_admin"
+                value={data.is_admin}
+                onChange={handleChange}
+                autoComplete="is_admin"
+                autoFocus
+              />
+
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={data.password.length < 8}
               >
-                Sign In
+                Registrarse
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>
