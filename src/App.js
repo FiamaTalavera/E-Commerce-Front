@@ -34,8 +34,7 @@ function App() {
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_URLBACK}/products`)
-      .then((res) => {
-        console.log("Los productos --> ", res.data); /* sacar console log? */
+      .then((res) => {        
         setProducts(res.data);
       })
       .catch((err) => console.log(err));
@@ -51,7 +50,7 @@ function App() {
 
   const handleLogout = () => {
         axios
-            .post(´${process.env.REACT_APP_URLBACK}/user/logout´, null, {
+            .post(`${process.env.REACT_APP_URLBACK}/user/logout`, null, {
                 withCredentials: true,
             })
             .then((response) => {
