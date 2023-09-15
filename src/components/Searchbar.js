@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Grid from './Grid';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 export const Searchbar = ({ onSearch, searchedProducts }) => {
     const [searchProduct, setSearchProduct] = useState('');
@@ -12,14 +12,11 @@ export const Searchbar = ({ onSearch, searchedProducts }) => {
         axios
             .get(`http://localhost:3001/products/search/${searchProduct}`)
             .then((res) => {
-                if (res.data.length === 0) {
-                    console.log('No hay productos');
-                } else {
                     onSearch(res.data);
-                }
             })
             .catch((error) => {
-                console.error('No hay producto', error);
+                toast.warn('No hay productos');
+                console.error('No hay productos', error);
             });
     };
 
@@ -29,9 +26,7 @@ export const Searchbar = ({ onSearch, searchedProducts }) => {
             handleSearch();
             navigate(`/search?query=${searchProduct}`);
         } else {
-            console.log('No buscaste nada!!!');
-            // onSearch([]);
-            // navigate('/');
+            toast.info('No buscaste nada!')
         }
     };
 

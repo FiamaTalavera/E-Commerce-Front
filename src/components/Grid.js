@@ -4,6 +4,7 @@ import { CardDetails } from '../commons/CardDetails';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../state/cart';
+import { toast } from 'react-toastify';
 
 const Grid = ({products}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -25,11 +26,12 @@ const Grid = ({products}) => {
         axios
             .post(`${process.env.REACT_APP_URLBACK}/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
             .then((response) => {
-                console.log(`Se agrego ${product.name} al chango`);
+                toast.success(`Se agrego ${product.name} al chango`)
                 dispatch(addToCart({ product, quantity }));
             })
             .catch((error) => {
                 console.error('Error al agregar al chango:', error);
+                toast.warn(`Necesitas loguearte.`);
             });
     };
 

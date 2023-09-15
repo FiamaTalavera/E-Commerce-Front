@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Login = ({ updateUser }) => {
   const [email, setEmail] = useState('');
@@ -52,17 +53,18 @@ const Login = ({ updateUser }) => {
             localStorage.setItem("user", JSON.stringify(res.data));
             updateUser(res.data);
             navigate("/");
+            toast.success('Bienvenid@!')
           } else {
-            alert("Contraseña incorrecta o error de inicio de sesión");
+            toast.error("Contraseña incorrecta o error de inicio de sesión");
           }
         })
         .catch((error) => {
           if (error.response) {
             const errorMessage = error.response.data.message || "Error de inicio de sesión";
-            alert(errorMessage);
+            toast.error(errorMessage);
           } else {
             console.error("Error de inicio de sesión:", error);
-            alert("Error de inicio de sesión");
+            toast.error('Error de inicio de sesión');
           }
         });
     }

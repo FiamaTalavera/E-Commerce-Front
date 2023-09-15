@@ -1,25 +1,25 @@
-import "./App.css";
-import { Route, Routes } from "react-router";
-import Navbar from "./components/Navbar";
-import Grid from "./components/Grid";
-import Login from "./components/Login";
-import { useEffect, useState } from "react";
-import Register from "./components/Register";
-import axios from "axios";
-import { Cart } from "./components/Cart";
-import { Categories } from "./components/Categories";
-import Sidebar from "./components/Sidebar";
-import Checkout from "./components/Checkout/Checkout";
-import { Home } from "./components/Home";
-import { Searchbar } from "./components/Searchbar";
-import History from "./components/History";
+import './App.css';
+import { Route, Routes } from 'react-router';
+import Navbar from './components/Navbar';
+import Login from './components/Login';
+import { useEffect, useState } from 'react';
+import Register from './components/Register';
+import axios from 'axios';
+import { Cart } from './components/Cart';
+import { Categories } from './components/Categories';
+import Sidebar from './components/Sidebar';
+import Checkout from './components/Checkout/Checkout';
+import { Home } from './components/Home';
+import { Searchbar } from './components/Searchbar';
+import History from './components/History';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router";
 
 function App() {
   const [user, setUser] = useState(null);
   const [products, setProducts] = useState([]);
   const [searchedProducts, setSearchProducts] = useState([]);
-
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -43,30 +43,35 @@ function App() {
     setUser(userAuth);
   };
 
-  const handleLogout = () => {
-    axios
-      .post(`${process.env.REACT_APP_URLBACK}/user/logout`, null, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        if (response.status === 204) {
-          localStorage.removeItem("user");
-          setUser(null);
-        } else {
-          console.error("Error al cerrar sesión");
-        }
-      })
-      .catch((error) => {
-        console.error("Error al cerrar sesión:", error);
-      });
-  };
-
   const onSearch = (searchRes) => {
     setSearchProducts(searchRes);
   };
 
+    const handleLogout = () => {
+        axios
+            .post(`${process.env.REACT_APP_URLBACK}/user/logout`, null, {
+                withCredentials: true,
+            })
+            .then((response) => {
+                if (response.status === 204) {
+                    localStorage.removeItem('user');
+                    setUser(null);
+                    toast.info('Hasta la proxima!', {
+                        icon: false,
+                    });
+                } else {
+                    toast.error('Error al cerrar sesión')
+                    console.error('Error al cerrar sesión');
+                }
+            })
+            .catch((error) => {
+                console.error('Error al cerrar sesión:', error);
+            });
+    };
+
   return (
     <div>
+    <ToastContainer position="top-right" autoClose={1600} pauseOnFocusLoss={false} pauseOnHover={false} />
       <Navbar
         user={user}
         handleLogout={handleLogout}
@@ -96,7 +101,7 @@ function App() {
         Acceso Denegado
         <button onClick={() => navigate("/")}> Volver al Inicio </button>
         </div>} />}
-
+        
         <Route path="/checkout" element={<Checkout />} />
         <Route
           path="/search"

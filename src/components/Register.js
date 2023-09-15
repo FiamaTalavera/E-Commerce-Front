@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -29,12 +30,12 @@ const Register = () => {
     axios
       .post(`${process.env.REACT_APP_URLBACK}/user/register`, data)
       .then((response) => {
-        const responseData = response.data;
-        console.log("Registro exitoso!", responseData);
+        toast.success('Registro exitoso!')
         setIsRegistered(true);
         navigate("/user/login");
       })
       .catch((error) => {
+        toast.error('Error de registro')
         console.error(error);
       });
   };
