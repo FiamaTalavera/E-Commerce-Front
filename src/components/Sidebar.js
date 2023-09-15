@@ -7,20 +7,28 @@ import PeopleIcon from "@mui/icons-material/People";
 import LayersIcon from "@mui/icons-material/Layers";
 import BakeryDiningRoundedIcon from "@mui/icons-material/BakeryDiningRounded";
 import { Categories } from "./Categories";
+import { Products } from "./Products"
 import React, { useState } from 'react'
 
 const Sidebar = () => {
   const [showCategories, setShowCategories] = useState(false);
+  const [showProducts, setShowProducts] = useState(false)
 
   const handleCategoriesClick = () => {
+    setShowProducts(false)
     setShowCategories(!showCategories);
+  }
+
+  const handleProductsClick = () => {
+    setShowCategories(false);
+    setShowProducts(!showProducts)
   }
   
   return (
     <>
       <div
         style={{
-          position: "fixed",
+          position: "absolute",
           top: 60,
           left: 0,
           width: "15%",
@@ -45,7 +53,7 @@ const Sidebar = () => {
             </ListItemIcon>
             <ListItemText primary="Usuarios" />
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton onClick={handleProductsClick}>
             <ListItemIcon>
               <BakeryDiningRoundedIcon />
             </ListItemIcon>
@@ -60,6 +68,7 @@ const Sidebar = () => {
         </React.Fragment>
       </div>
       {showCategories && <Categories />}
+      {showProducts && <Products />}
     </>
   );
 }

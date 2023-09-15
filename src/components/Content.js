@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import Card from '../commons/Card';
+import React, { useState } from 'react';
+import CardProduct from '../commons/CardProduct';
 import { CardDetails } from '../commons/CardDetails';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../state/cart';
+import { toast } from 'react-toastify';
 
-const Grid = () => {
+const Content = ({products}) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [products, setProducts] = useState([]);
+    const dispatch = useDispatch();
+    // console.log('PRODUCTS --->', products);
 
     const handleShowMore = (product) => {
         axios
-            .get(`http://localhost:3001/products/${product.id}`)
+            .get(`${process.env.REACT_APP_URLBACK}/products/${product.id}`)
             .then((res) => {
                 setSelectedProduct(res.data);
             })
@@ -18,24 +22,17 @@ const Grid = () => {
             });
     };
 
-    useEffect(() => {
-        axios
-            .get('http://localhost:3001/products')
-            .then((res) => {
-                console.log('res.data --> ', res.data); /* sacar console log? */
-                setProducts(res.data);
-            })
-            .catch((err) => console.log(err));
-    }, []);
 
     const handleAddToCart = (product, quantity) => {
         axios
-            .post(`http://localhost:3001/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
+            .post(`${process.env.REACT_APP_URLBACK}/products/addToCart/${product.id}`, { quantity }, { withCredentials: true })
             .then((response) => {
-                console.log(`Se agrego ${product.name} al chango`);
+                toast.success(`Se agrego ${product.name} al chango`)
+                dispatch(addToCart({ product, quantity }));
             })
             .catch((error) => {
                 console.error('Error al agregar al chango:', error);
+                toast.warn(`Necesitas loguearte.`);
             });
     };
 
@@ -46,7 +43,7 @@ const Grid = () => {
                 <div className="columns is-multiline">
                     {products.map((product, i) => (
                         <div className="column is-4" key={i}>
-                            <Card
+                            <CardProduct
                                 product={product}
                                 onShowMore={() => {
                                     handleShowMore(product);
@@ -61,4 +58,4 @@ const Grid = () => {
     );
 };
 
-export default Grid;
+export default Content;
