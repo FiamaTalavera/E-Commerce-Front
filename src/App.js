@@ -1,11 +1,12 @@
-import './App.css';
-import { Route, Routes } from 'react-router';
-import Navbar from './components/Navbar';
-import Login from './components/Login';
-import { useEffect, useState } from 'react';
-import Register from './components/Register';
-import axios from 'axios';
-import { Cart } from './components/Cart';
+import "./App.css";
+import { Route, Routes } from "react-router";
+import Navbar from "./components/Navbar";
+import Login from "./components/Login";
+import { useEffect, useState } from "react";
+import Register from "./components/Register";
+import axios from "axios";
+import { Cart } from "./components/Cart";
+import UserProfile from "./components/UserProfile";
 import { Categories } from './components/Categories';
 import Sidebar from './components/Sidebar';
 import Checkout from './components/Checkout/Checkout';
@@ -43,14 +44,14 @@ function App() {
   const updateUser = (userAuth) => {
     setUser(userAuth);
   };
-
+  
   const onSearch = (searchRes) => {
     setSearchProducts(searchRes);
   };
 
-    const handleLogout = () => {
+  const handleLogout = () => {
         axios
-            .post(`${process.env.REACT_APP_URLBACK}/user/logout`, null, {
+            .post(´${process.env.REACT_APP_URLBACK}/user/logout´, null, {
                 withCredentials: true,
             })
             .then((response) => {
@@ -61,14 +62,14 @@ function App() {
                         icon: false,
                     });
                 } else {
-                    toast.error('Error al cerrar sesión')
+                    toast.error('Error al cerrar sesión');
                     console.error('Error al cerrar sesión');
                 }
             })
             .catch((error) => {
                 console.error('Error al cerrar sesión:', error);
             });
-    };
+    };     
 
   return (
       <div>
@@ -80,7 +81,8 @@ function App() {
               <Route path="/user/register" element={<Register />} />
               <Route path="/user/login" element={<Login updateUser={updateUser} />} />
               <Route path="/order" element={<Cart />} />
-
+              <Route path="/user/profile" element={<UserProfile user={user} updateUser={updateUser} />} />    
+            
               {user && user.is_admin ? (
                   <>
                       <Route path="/admin" element={<Sidebar />} />
